@@ -1,0 +1,39 @@
+@import "../../variables.scss";
+
+.cont-challenge {
+  width: 100%;
+
+  .child {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 0 10px;
+
+    .timmer {
+      background-color: #ffffff;
+      border: 2px solid $rojo;
+      color: $rojo;
+      height: 30px;
+    }
+
+    .points {
+      height: 30px;
+      background-color: $naranja;
+    }
+  }
+
+  .chlid-2 {
+    .statement {
+      background-color: $verde-enun;
+      border: 2px solid $verde-btn;
+    }
+
+    .cont-answers {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+      margin: 20px 0;
+    }
+  }
+}

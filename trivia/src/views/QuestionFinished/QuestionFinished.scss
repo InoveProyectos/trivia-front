@@ -1,0 +1,18 @@
+@import "../../variables.scss";
+
+.cont-question-finished {
+  width: 100%;
+
+  .cont-question-finished-data {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    margin: 0 0 40px;
+  }
+
+  .btn-siguiente {
+    background-color: $verde-btn;
+    border-color: $verde-btn;
+  }
+}

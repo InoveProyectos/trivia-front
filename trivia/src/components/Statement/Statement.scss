@@ -1,0 +1,30 @@
+.cont-statement {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .statement {
+    padding: 0.5rem;
+    width: 90% !important;
+    height: 170px !important;
+    text-align: center;
+    outline: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: space-evenly;
+    align-items: center;
+    border-radius: 4px;
+
+    p {
+      font-weight: 600;
+      word-break: break-word;
+    }
+
+    span {
+      font-size: 0.9rem;
+      word-break: break-word;
+    }
+  }
+}

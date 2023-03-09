@@ -1,0 +1,15 @@
+@import "../../variables.scss";
+
+.aviso {
+  width: 95%;
+  margin: 0 auto;
+  background-color: $naranja;
+  border: 2px solid $naranja-oscuro;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  color: #fff;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19px;
+}

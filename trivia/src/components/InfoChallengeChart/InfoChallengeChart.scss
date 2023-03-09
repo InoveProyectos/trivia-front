@@ -1,0 +1,17 @@
+@import "../../variables.scss";
+
+.cont-data-with-doughnut {
+  padding: 1rem 0.5rem 0rem !important;
+
+  div:first-child {
+    margin: 0 0 15px;
+  }
+
+  .cont-doughnut {
+    margin: 1rem 0.2rem;
+    padding: 0.5rem;
+    border-radius: 2px;
+    // background-color: $azul-claro;
+    background-color: #fff;
+  }
+}

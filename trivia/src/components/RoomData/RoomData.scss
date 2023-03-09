@@ -1,0 +1,45 @@
+@import "../../variables.scss";
+
+.room-data {
+  width: 95%;
+  height: 105px;
+  margin: 20px auto;
+  border: 2px solid $azul-oscuro;
+  border-radius: 6px;
+  background-color: $azul;
+  display: flex;
+  flex-direction: column;
+
+  div {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50%;
+    gap: 10px;
+
+    p {
+      color: #fff;
+      font-style: normal;
+      font-weight: 600;
+      font-size: 16px;
+      line-height: 19px;
+      text-align: center;
+    }
+
+    span {
+      font-weight: 700;
+      font-size: 24px;
+      line-height: 29px;
+      /* identical to box height */
+
+      text-align: center;
+
+      color: #ffffff;
+    }
+  }
+
+  div:first-child {
+    border-bottom: 2px solid $azul-oscuro;
+  }
+}

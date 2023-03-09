@@ -1,0 +1,26 @@
+@import "../../variables.scss";
+
+.cont-lobby {
+  .titulo {
+    width: 100%;
+    margin: 0 0 20px;
+  }
+
+  .instructivo {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    margin: 10px auto;
+    border: 2px solid $verde-oscuro;
+    border-radius: 6px;
+    padding: 0.5rem 1rem;
+    overflow: auto;
+    max-height: 200px;
+    background-color: $verde-oscuro-opacity;
+
+    span {
+      font-weight: 600;
+      margin: 5px 0 10px;
+    }
+  }
+}

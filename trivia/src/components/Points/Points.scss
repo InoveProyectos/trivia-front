@@ -1,0 +1,20 @@
+.points {
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  background-color: aqua;
+  padding: 0.3rem 0.5rem;
+  border-radius: 4px;
+
+  p {
+    font-size: 0.9rem;
+    color: #fff;
+  }
+
+  span {
+    font-weight: 600;
+    color: #fff;
+  }
+}

@@ -1,0 +1,28 @@
+@import "../../variables.scss";
+
+.box-login {
+  width: 80%;
+  max-width: 300px;
+  padding: 1rem;
+  margin: 0 auto;
+  background-color: $azul;
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+  border-radius: 8px;
+
+  .inp-login {
+    background: #ffffff;
+    border: 3px solid $azul-oscuro;
+    color: $gris-letras;
+    outline: $azul-oscuro;
+    text-align: center;
+  }
+
+  .btn-login {
+    background: $azul-oscuro;
+    border: 3px solid $azul-oscuro;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    color: #ffffff;
+  }
+}

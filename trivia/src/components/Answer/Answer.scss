@@ -1,0 +1,53 @@
+@import "../../variables.scss";
+
+.answer {
+  width: 95%;
+  background-color: $azul;
+  border: 2px solid;
+  border-color: $azul;
+  color: #fff;
+  position: relative;
+}
+
+.answer-selected {
+  background-color: #ffffff;
+  color: #000;
+}
+
+.answer-nonselected {
+  filter: opacity(0.5);
+}
+
+.answer-failed {
+  border-color: $rojo;
+  background-color: #ffffff;
+  color: $rojo;
+}
+
+.answer-failed::after {
+  content: "";
+  position: absolute;
+  background-image: url("../../assets/img/failed.png");
+  width: 30px;
+  height: 30px;
+  right: -12px;
+  top: 25px;
+  background-size: contain;
+}
+
+.answer-success {
+  border-color: $verde;
+  background-color: #ffffff;
+  color: $verde;
+}
+
+.answer-success::after {
+  content: "";
+  position: absolute;
+  background-image: url("../../assets/img/success.png");
+  width: 30px;
+  height: 30px;
+  right: -12px;
+  top: 25px;
+  background-size: contain;
+}

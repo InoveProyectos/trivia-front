@@ -1,0 +1,12 @@
+@import "../../variables.scss";
+
+.btn-share {
+  position: relative;
+  background-color: $naranja;
+  border: 2px solid $naranja;
+
+  .MuiSvgIcon-root {
+    position: absolute;
+    left: 15px;
+  }
+}
