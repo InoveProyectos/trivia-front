@@ -7,7 +7,7 @@ interface SocketContextProps {
 
 const SocketContext = createContext<SocketContextProps>({ socket: null });
 
-const SocketProvider = ({ children }: any) => {
+const SocketProvider = ({ children }: { children: React.ReactNode }) => {
   const socket = io("http://localhost:4000");
 
   return (

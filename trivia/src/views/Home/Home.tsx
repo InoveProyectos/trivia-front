@@ -3,6 +3,7 @@ import triviaLogo from "../../assets/img/TriviaLogo.svg";
 import inoveLogo from "../../assets/img/inoveLogo.svg";
 import wave from "../../assets/img/Wave.svg";
 import "./Home.scss";
+import { ToastContainer } from "react-toastify";
 
 function Home() {
   return (
