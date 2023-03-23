@@ -15,33 +15,11 @@ import "./Lobby.scss";
 function Lobby() {
   const { id } = useParams();
   const { getTriviaById } = useTrivia();
-  const { setHasLink, setIsModerate } = useMyAppContext();
+  const { trivia } = useMyAppContext();
   const [resTrivia, setResTrivia] = useState<any>();
   const [flag, setFlag] = useState<boolean>(false);
 
-  useEffect(() => {
-    if (!flag) {
-      let lobbyId = id;
-      if (!!lobbyId) {
-        console.log({ lobbyId });
-
-        // obtener la partida
-        getTriviaById(lobbyId);
-
-        setHasLink(true);
-
-        //logica para saber si es moderada o no
-        //TODO Descomentar
-        // res.moderated ? setIsModerate(true) : setIsModerate(false);
-      } else {
-        console.log({ lobbyId });
-
-        //ingresa por home
-        setHasLink(false);
-      }
-      setFlag(true);
-    }
-  }, []);
+  useEffect(() => {}, []);
 
   console.log({ id, resTrivia });
   return (

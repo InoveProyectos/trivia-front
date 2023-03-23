@@ -1,14 +1,15 @@
 import React, { useContext } from "react";
 import { createContext, useState } from "react";
+import { intTrivia } from "../interfaces";
 
 type AppContextData = {
-  isModerate?: boolean;
+  trivia: intTrivia;
+  setTrivia: React.Dispatch<React.SetStateAction<intTrivia>>;
   hasLink?: boolean;
-  setIsModerate: React.Dispatch<React.SetStateAction<boolean>>;
   setHasLink: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export const AppContext = createContext<AppContextData | null>(null);
+export const AppContext = createContext<AppContextData>({} as AppContextData);
 
 export const useMyAppContext = () => {
   const context = useContext(AppContext);
@@ -23,12 +24,18 @@ export const AppContextProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [isModerate, setIsModerate] = useState(false);
-  const [hasLink, setHasLink] = useState(false);
+  const [trivia, setTrivia] = useState<intTrivia>({
+    id: null,
+    name: "",
+    description: "",
+    moderated: null,
+    end_date: "",
+  });
+  const [hasLink, setHasLink] = useState<boolean>(false);
 
   const values: AppContextData = {
-    isModerate,
-    setIsModerate,
+    trivia,
+    setTrivia: setTrivia,
     hasLink,
     setHasLink,
   };

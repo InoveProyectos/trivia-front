@@ -18,7 +18,7 @@ const socket = io("http://localhost:4000");
 function App() {
   const [isLoading, setIsLoading] = useState(false);
   const location = useLocation();
-  const { setHasLink, setIsModerate } = useMyAppContext();
+  const { setHasLink } = useMyAppContext();
   const { getTriviaById } = useTrivia();
   const { id } = useParams();
 

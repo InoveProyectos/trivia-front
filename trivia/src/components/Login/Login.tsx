@@ -1,6 +1,7 @@
 import React, { ChangeEvent, useState } from "react";
 import { TailSpin } from "react-loader-spinner";
 import { useNavigate } from "react-router-dom";
+import useNotificaiones from "../../hooks/useNotificaiones";
 import useTrivia from "../../hooks/useTrivia";
 import { intTrivia } from "../../interfaces";
 import SimpleButton from "../Buttons/SimpleButton";
@@ -12,23 +13,27 @@ function Login() {
   const { getTriviaById } = useTrivia();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { errorToast } = useNotificaiones();
 
   const handleChangeCodigoJuego = (e: ChangeEvent<HTMLInputElement>) => {
     setCodigoJuego(e.target.value);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     console.log("llego al submit");
     setIsLoading(true);
 
-    const res = getTriviaById(codigoJuego);
-
-    setIsLoading(false);
-
-    console.log(res);
-
-    //TODO descomentar esta linea
-    // navigate("/lobby");
+    try {
+      let res = await getTriviaById(codigoJuego);
+      setIsLoading(false);
+      console.log(res);
+      if (res) {
+        navigate(`/lobby/${res}`);
+      }
+    } catch (err) {
+      errorToast("Hubo un error al encontrar el challenge");
+      setIsLoading(false);
+    }
   };
 
   return (

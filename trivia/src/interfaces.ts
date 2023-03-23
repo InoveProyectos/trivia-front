@@ -35,9 +35,9 @@ export interface intUseTriviaHook {
 }
 
 export interface intTrivia {
-  id: number;
-  name: string;
-  description: string;
-  moderated: boolean;
-  end_date: string;
+  id?: number | null;
+  name?: string;
+  description?: string;
+  moderated?: boolean | null;
+  end_date?: string;
 }
