@@ -16,26 +16,18 @@ function Lobby() {
   const { id } = useParams();
   const { getTriviaById } = useTrivia();
   const { trivia } = useMyAppContext();
-  const [resTrivia, setResTrivia] = useState<any>();
-  const [flag, setFlag] = useState<boolean>(false);
 
   useEffect(() => {}, []);
 
-  console.log({ id, resTrivia });
   return (
     <Layout>
       <div className="cont-lobby">
         <div className="titulo">
-          <h1>PI-06 Unidad 1</h1>
+          <h1>{trivia.name}</h1>
         </div>
         <div className="instructivo">
           <span>¿Como se juega?</span>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit.
-            Necessitatibus saepe nihil dicta voluptas, explicabo rem possimus
-            facilis consectetur beatae delectus molestiae, architecto mollitia.
-            Ipsum dolor, saepe sequi numquam enim aut?
-          </p>
+          <p>{trivia.description}</p>
         </div>
         <RoomData />
         <ButtonShare />
