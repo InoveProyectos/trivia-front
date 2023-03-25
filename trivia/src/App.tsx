@@ -58,7 +58,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/lobby/:id" element={<Lobby />} />
-          <Route path="/challenge" element={<Challenge />} />
+          <Route path="/challenge/:id/:idChallenge" element={<Challenge />} />
           <Route
             path="/challenge/questionFinished"
             element={<QuestionFinished />}

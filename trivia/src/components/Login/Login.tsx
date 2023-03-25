@@ -1,9 +1,9 @@
-import React, { ChangeEvent, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { TailSpin } from "react-loader-spinner";
 import { useNavigate } from "react-router-dom";
 import useNotificaiones from "../../hooks/useNotificaiones";
 import useTrivia from "../../hooks/useTrivia";
-import { intTrivia } from "../../interfaces";
+import useUser from "../../hooks/useUser";
 import SimpleButton from "../Buttons/SimpleButton";
 import Input from "./Input";
 import "./Login.scss";
@@ -11,6 +11,7 @@ import "./Login.scss";
 function Login() {
   const [codigoJuego, setCodigoJuego] = useState<string>("");
   const { getTriviaById } = useTrivia();
+  const { getUserByUsername } = useUser();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { errorToast } = useNotificaiones();
@@ -20,18 +21,22 @@ function Login() {
   };
 
   const handleSubmit = async () => {
+    let idTrivia: number | null = null;
     console.log("llego al submit");
     setIsLoading(true);
 
     try {
-      let res = await getTriviaById(codigoJuego);
+      let resTrivia: any = await getTriviaById(codigoJuego);
+      let resUser: any = await getUserByUsername("santi");
       setIsLoading(false);
-      console.log(res);
-      if (res) {
-        navigate(`/lobby/${res}`);
+      console.log({ resTrivia });
+      console.log({ resUser });
+
+      if (resTrivia) {
+        navigate(`/lobby/${resTrivia}`);
       }
     } catch (err) {
-      errorToast("Hubo un error al encontrar el challenge");
+      errorToast("Hubo un error al encontrar la trivia o el usuario");
       setIsLoading(false);
     }
   };

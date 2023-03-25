@@ -41,3 +41,27 @@ export interface intTrivia {
   moderated?: boolean | null;
   end_date?: string;
 }
+
+export interface intRoomData {
+  roomCode?: number | null | undefined;
+}
+
+export interface intUser {
+  username?: string;
+  name?: string;
+  is_staff?: false | null;
+  role?: string;
+  score?: number | null;
+  bonus?: number | null;
+}
+
+export interface intAnswer {
+  name?: string;
+  description: string;
+  options: Array<intAnswerOptions>;
+}
+
+export interface intAnswerOptions {
+  index?: number;
+  content?: string;
+}

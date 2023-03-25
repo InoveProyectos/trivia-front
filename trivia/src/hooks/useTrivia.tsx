@@ -1,17 +1,16 @@
 import { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { AppContext } from "../Contexts/AppContext";
+import { AppContext, useMyAppContext } from "../Contexts/AppContext";
 import { SocketContext } from "../Contexts/SocketContext";
 import { intTrivia } from "../interfaces";
 import useNotificaiones from "./useNotificaiones";
 
-export const useTrivia = () => {
-  // const [dataTrivia, setDataTrivia] = useState();
+const useTrivia = () => {
   const { socket } = useContext(SocketContext);
-  const { setTrivia, trivia } = useContext(AppContext);
+  const { setTrivia, setAnswers } = useMyAppContext();
   const { errorToast } = useNotificaiones();
 
-  const getTriviaById = async (id: string | number) => {
+  const getTriviaById = async (id: string | number | undefined) => {
     if (!socket) {
       return <div>No se pudo conectar con el servidor</div>;
     }
@@ -47,7 +46,34 @@ export const useTrivia = () => {
     });
   };
 
-  return { getTriviaById };
+  const startTrivia = async (id: string | number | undefined | null) => {
+    if (!socket) {
+      return <div>No se pudo conectar con el servidor</div>;
+    }
+
+    socket.emit("startTrivia", { id: id });
+
+    return new Promise((res, rej) => {
+      socket.on("startTriviaRes", async (data) => {
+        try {
+          if (data.hasOwnProperty("err")) {
+            errorToast(data.err);
+            rej(data.err);
+          } else {
+            const resAnswers = data.res;
+            console.log("dataTrivia", { resAnswers });
+            setAnswers(resAnswers);
+            res(resAnswers);
+          }
+        } catch (err) {
+          console.log(err);
+          rej(err);
+        }
+      });
+    });
+  };
+
+  return { getTriviaById, startTrivia };
 };
 
 export default useTrivia;

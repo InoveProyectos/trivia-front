@@ -1,13 +1,15 @@
 import EmojiPeopleIcon from "@mui/icons-material/EmojiPeople";
+import { intRoomData } from "../../interfaces";
 import ButtonCopy from "../ButtonCopy/ButtonCopy";
 import "./RoomData.scss";
 
-function RoomData() {
+function RoomData({ roomCode }: intRoomData) {
+  console.log({ roomCode });
   return (
     <div className="room-data">
       <div>
         <p>
-          Codigo: <span id="room_code">0000</span>
+          Codigo: <span id="room_code">{roomCode}</span>
         </p>
         <ButtonCopy id="room_code" />
       </div>

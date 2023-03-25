@@ -3,21 +3,20 @@ import { useParams } from "react-router-dom";
 import Aviso from "../../components/Aviso/Aviso";
 import ButtonBegin from "../../components/ButtonBegin/ButtonBegin";
 import ButtonShare from "../../components/ButtonShare/ButtonShare";
-import Header from "../../components/Header/Header";
 import Layout from "../../components/Layout/Layout";
 import RoomData from "../../components/RoomData/RoomData";
 import { useMyAppContext } from "../../Contexts/AppContext";
 import useTrivia from "../../hooks/useTrivia";
-import { intTrivia } from "../../interfaces";
-
 import "./Lobby.scss";
 
 function Lobby() {
+  const { trivia, user } = useMyAppContext();
   const { id } = useParams();
   const { getTriviaById } = useTrivia();
-  const { trivia } = useMyAppContext();
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    getTriviaById(id);
+  }, []);
 
   return (
     <Layout>
@@ -29,10 +28,17 @@ function Lobby() {
           <span>¿Como se juega?</span>
           <p>{trivia.description}</p>
         </div>
-        <RoomData />
-        <ButtonShare />
-        <ButtonBegin />
-        <Aviso txt="Esperando a que el anfitrion comience la trivia..." />
+        <RoomData roomCode={trivia.id} />
+        <ButtonShare roomCode={trivia.id} />
+        {trivia.moderated ? (
+          user.role !== "estudiante" ? (
+            <ButtonBegin roomCode={trivia.id} />
+          ) : (
+            <Aviso txt="Esperando a que el anfitrion comience la trivia..." />
+          )
+        ) : (
+          <ButtonBegin roomCode={trivia.id} />
+        )}
       </div>
     </Layout>
   );
