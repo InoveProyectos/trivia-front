@@ -1,24 +1,28 @@
 import { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { AppContext, useMyAppContext } from "../Contexts/AppContext";
+import { AppContext, useTriviaContext } from "../Contexts/AppContext";
 import { SocketContext } from "../Contexts/SocketContext";
-import { intTrivia } from "../interfaces";
+import { intAnswer, intTrivia } from "../interfaces";
 import useNotificaiones from "./useNotificaiones";
 
 const useTrivia = () => {
   const { socket } = useContext(SocketContext);
-  const { setTrivia, setAnswers } = useMyAppContext();
+  const { setTrivia, setAnswers, setIdChallengeActual, setCountUsersConected } =
+    useTriviaContext();
   const { errorToast } = useNotificaiones();
+  const navigate = useNavigate();
+
+  socket?.on("listenCountUsersConected", async (data) => {
+    console.log(data);
+    setCountUsersConected(data);
+  });
 
   const getTriviaById = async (id: string | number | undefined) => {
-    if (!socket) {
-      return <div>No se pudo conectar con el servidor</div>;
-    }
-
-    socket.emit("get-triviaById", { id: id });
+    socket?.emit("get-triviaById", { id: id });
 
     return new Promise((resolve, reject) => {
-      socket.on("get-triviaById-res", async (data) => {
+      socket?.on("get-triviaById-res", async (data) => {
         try {
           if (data.hasOwnProperty("err")) {
             errorToast(data.err);
@@ -47,22 +51,43 @@ const useTrivia = () => {
   };
 
   const startTrivia = async (id: string | number | undefined | null) => {
-    if (!socket) {
-      return <div>No se pudo conectar con el servidor</div>;
-    }
+    socket?.emit("startTrivia", { id: id });
 
-    socket.emit("startTrivia", { id: id });
+    // return new Promise((res, rej) => {
+    //   socket?.on("startTriviaRes", async (data) => {
+    //     try {
+    //       if (data.hasOwnProperty("err")) {
+    //         errorToast(data.err);
+    //         rej(data.err);
+    //       } else {
+    //         const resAnswers: Array<intAnswer> = data.res;
+    //         console.log(data);
+    //         console.log("dataTrivia", { resAnswers });
+    //         setAnswers(resAnswers);
+    //         setIdChallengeActual(data.idChallengeActual);
+    //         res(resAnswers);
+    //       }
+    //     } catch (err) {
+    //       console.log(err);
+    //       rej(err);
+    //     }
+    //   });
+    // });
+  };
 
+  const listeningStartTrivia = () => {
     return new Promise((res, rej) => {
-      socket.on("startTriviaRes", async (data) => {
+      socket?.on("startTriviaRes", async (data) => {
         try {
           if (data.hasOwnProperty("err")) {
             errorToast(data.err);
             rej(data.err);
           } else {
-            const resAnswers = data.res;
+            const resAnswers: Array<intAnswer> = data.res;
+            console.log(data);
             console.log("dataTrivia", { resAnswers });
             setAnswers(resAnswers);
+            setIdChallengeActual(data.idChallengeActual);
             res(resAnswers);
           }
         } catch (err) {
@@ -73,7 +98,44 @@ const useTrivia = () => {
     });
   };
 
-  return { getTriviaById, startTrivia };
+  socket?.on("startTriviaRes", async (data) => {
+    try {
+      if (data.hasOwnProperty("err")) {
+        errorToast(data.err);
+      } else {
+        const resAnswers: Array<intAnswer> = data.res;
+        console.log(data);
+        console.log("dataTrivia", { resAnswers });
+        setAnswers(resAnswers);
+        setIdChallengeActual(data.idChallengeActual);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  });
+
+  const nextChallenge = (roomCode?: string, idChallegeNum?: number) => {
+    socket?.emit("nextChallenge");
+
+    //Ver como hacer para calificar
+  };
+
+  socket?.on("nextChallengeRes", (data) => {
+    console.log("Pasamos al siguiente paso de la trivia");
+    setIdChallengeActual(data.idChallengeActual);
+  });
+
+  const finishTrivia = () => {
+    socket?.emit("finishChallenge");
+  };
+
+  return {
+    getTriviaById,
+    startTrivia,
+    listeningStartTrivia,
+    nextChallenge,
+    finishTrivia,
+  };
 };
 
 export default useTrivia;

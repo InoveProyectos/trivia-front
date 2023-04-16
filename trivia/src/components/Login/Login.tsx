@@ -25,9 +25,11 @@ function Login() {
     console.log("llego al submit");
     setIsLoading(true);
 
+    let usuario = prompt("Ingrese el numero de usuario");
+
     try {
       let resTrivia: any = await getTriviaById(codigoJuego);
-      let resUser: any = await getUserByUsername("santi");
+      let resUser: any = await getUserByUsername(usuario ? usuario : "");
       setIsLoading(false);
       console.log({ resTrivia });
       console.log({ resUser });

@@ -19,13 +19,15 @@ export interface intPoints {
 }
 
 export interface intStatement {
-  ask: string;
+  ask?: string;
   remember?: string;
 }
 
-export interface intAnswer {
-  ans: string;
-  onSelected: (num: number) => void;
+export interface intAnswerCom {
+  ansSelected?: number;
+  ans: intAnswerOptions;
+  onSelected: (num?: number) => void;
+  disable: boolean | undefined;
 }
 
 export interface intUseTriviaHook {

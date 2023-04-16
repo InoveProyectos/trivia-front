@@ -1,25 +1,43 @@
+import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTriviaContext } from "../../Contexts/AppContext";
+import { SocketContext } from "../../Contexts/SocketContext";
 import useNotificaiones from "../../hooks/useNotificaiones";
 import useTrivia from "../../hooks/useTrivia";
-import { intRoomData } from "../../interfaces";
+import { intAnswer, intRoomData } from "../../interfaces";
 import "./ButtonBegin.scss";
 
 function ButtonBegin({ roomCode }: intRoomData) {
-  const { startTrivia } = useTrivia();
+  const { socket } = useContext(SocketContext);
+  const { answers } = useTriviaContext();
+  const { startTrivia, listeningStartTrivia } = useTrivia();
   const { errorToast } = useNotificaiones();
   const navigate = useNavigate();
 
+  // useEffect(() => {
+
+  // const escuchando = async () => {
+  //   let res: any = await listeningStartTrivia();
+  //   console.log({ res });
+  //   res.length > 0
+  //     ? navigate(`/challenge/${roomCode}`)
+  //     : errorToast("Hubo un error al traer las preguntas");
+  // };
+
+  // escuchando();
+
   const handleStartTrivia = async () => {
-    try {
-      let res: any = await startTrivia(roomCode);
-      console.log({ res });
-      res.length > 0
-        ? navigate("/challenge/:id/:idChallenge")
-        : errorToast("Hubo un error al traer las preguntas");
-    } catch (err) {
-      console.log(err);
-      errorToast("Hubo un error");
-    }
+    // try {
+    startTrivia(roomCode);
+    // let res: any = await listeningStartTrivia();
+    // console.log({ res });
+    // res.length > 0
+    //   ? navigate(`/challenge/${roomCode}`)
+    //   : errorToast("Hubo un error al traer las preguntas");
+    // } catch (err) {
+    //   console.log(err);
+    //   errorToast("Hubo un error");
+    // }
   };
 
   return (

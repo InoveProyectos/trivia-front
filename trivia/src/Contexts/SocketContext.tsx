@@ -1,4 +1,4 @@
-import { createContext } from "react";
+import { createContext, useEffect, useState } from "react";
 import io, { Socket } from "socket.io-client";
 
 interface SocketContextProps {
@@ -8,7 +8,16 @@ interface SocketContextProps {
 const SocketContext = createContext<SocketContextProps>({ socket: null });
 
 const SocketProvider = ({ children }: { children: React.ReactNode }) => {
-  const socket = io("http://localhost:4000");
+  const [socket, setSocket] = useState<Socket | null>(null);
+
+  useEffect(() => {
+    const newSocket = io("http://localhost:4000");
+    setSocket(newSocket);
+
+    return () => {
+      newSocket.disconnect();
+    };
+  }, []);
 
   return (
     <SocketContext.Provider value={{ socket }}>

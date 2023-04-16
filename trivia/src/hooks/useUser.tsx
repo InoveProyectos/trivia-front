@@ -1,10 +1,10 @@
 import { useContext, useEffect, useState } from "react";
-import { useMyAppContext } from "../Contexts/AppContext";
+import { useTriviaContext } from "../Contexts/AppContext";
 import { SocketContext } from "../Contexts/SocketContext";
 
 const useUser = () => {
   const { socket } = useContext(SocketContext);
-  const { setUser, user } = useMyAppContext();
+  const { setUser, user } = useTriviaContext();
 
   const getUserByUsername = async (username: string) => {
     if (!socket) {

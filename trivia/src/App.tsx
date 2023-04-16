@@ -8,19 +8,26 @@ import Challenge from "./views/Challenge/Challenge";
 import QuestionFinished from "./views/QuestionFinished/QuestionFinished";
 import Challengefinished from "./views/ChallengeEnd/Challengefinished";
 import LoadScreen from "./views/LoadScreen/LoadScreen";
-import { AppContext, useMyAppContext } from "./Contexts/AppContext";
+import { AppContext, useTriviaContext } from "./Contexts/AppContext";
 import useTrivia from "./hooks/useTrivia";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const socket = io("http://localhost:4000");
-
 function App() {
   const [isLoading, setIsLoading] = useState(false);
-  const location = useLocation();
-  const { setHasLink } = useMyAppContext();
-  const { getTriviaById } = useTrivia();
-  const { id } = useParams();
+  // const location = useLocation();
+  // const { setHasLink } = useTriviaContext();
+  // const { getTriviaById } = useTrivia();
+  // const { id } = useParams();
+  // const socket = io("http://localhost:4000");
+
+  // let socket: any = {};
+
+  // useEffect(() => {
+  //   if (socket.id) {
+  //     socket = io("http://localhost:4000");
+  //   }
+  // });
 
   // useEffect(() => {
   //   //logica para saber si ingresa por link o no
@@ -58,7 +65,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/lobby/:id" element={<Lobby />} />
-          <Route path="/challenge/:id/:idChallenge" element={<Challenge />} />
+          <Route path="/challenge/:id" element={<Challenge />} />
           <Route
             path="/challenge/questionFinished"
             element={<QuestionFinished />}

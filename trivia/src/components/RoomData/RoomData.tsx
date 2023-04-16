@@ -1,10 +1,20 @@
 import EmojiPeopleIcon from "@mui/icons-material/EmojiPeople";
+import { useContext, useEffect } from "react";
+import { useTriviaContext } from "../../Contexts/AppContext";
+import { SocketContext } from "../../Contexts/SocketContext";
 import { intRoomData } from "../../interfaces";
 import ButtonCopy from "../ButtonCopy/ButtonCopy";
 import "./RoomData.scss";
 
 function RoomData({ roomCode }: intRoomData) {
+  const { countUsersConected } = useTriviaContext();
   console.log({ roomCode });
+
+  // socket?.on("listenCountUsersConected", async (data) => {
+  //   console.log(data);
+  //   setCountUsersConected(data);
+  // });
+
   return (
     <div className="room-data">
       <div>
@@ -15,7 +25,7 @@ function RoomData({ roomCode }: intRoomData) {
       </div>
       <div>
         <p>
-          Personas en la sala: <span>99</span>
+          Personas en la sala: <span>{countUsersConected}</span>
         </p>
 
         <EmojiPeopleIcon sx={{ color: "#fff" }} />

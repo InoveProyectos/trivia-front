@@ -11,11 +11,15 @@ type AppContextData = {
   setAnswers: React.Dispatch<React.SetStateAction<intAnswer[]>>;
   hasLink?: boolean;
   setHasLink: React.Dispatch<React.SetStateAction<boolean>>;
+  idChallengeActual: number;
+  setIdChallengeActual: React.Dispatch<React.SetStateAction<number>>;
+  countUsersConected: number;
+  setCountUsersConected: React.Dispatch<React.SetStateAction<number>>;
 };
 
 export const AppContext = createContext<AppContextData>({} as AppContextData);
 
-export const useMyAppContext = () => {
+export const useTriviaContext = () => {
   const context = useContext(AppContext);
   if (!context) {
     throw new Error("useMyContext debe usarse dentro de un MyContext.Provider");
@@ -45,6 +49,8 @@ export const AppContextProvider = ({
   });
   const [answers, setAnswers] = useState<Array<intAnswer>>([] ?? []);
   const [hasLink, setHasLink] = useState<boolean>(false);
+  const [idChallengeActual, setIdChallengeActual] = useState<number>(0);
+  const [countUsersConected, setCountUsersConected] = useState<number>(0);
 
   const values: AppContextData = {
     trivia,
@@ -55,6 +61,10 @@ export const AppContextProvider = ({
     setAnswers: setAnswers,
     hasLink,
     setHasLink,
+    idChallengeActual,
+    setIdChallengeActual,
+    countUsersConected,
+    setCountUsersConected,
   };
   return <AppContext.Provider value={values}>{children}</AppContext.Provider>;
 };

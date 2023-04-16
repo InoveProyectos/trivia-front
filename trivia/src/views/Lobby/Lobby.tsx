@@ -1,22 +1,32 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Aviso from "../../components/Aviso/Aviso";
 import ButtonBegin from "../../components/ButtonBegin/ButtonBegin";
 import ButtonShare from "../../components/ButtonShare/ButtonShare";
 import Layout from "../../components/Layout/Layout";
 import RoomData from "../../components/RoomData/RoomData";
-import { useMyAppContext } from "../../Contexts/AppContext";
+import { useTriviaContext } from "../../Contexts/AppContext";
+import useNotificaiones from "../../hooks/useNotificaiones";
 import useTrivia from "../../hooks/useTrivia";
 import "./Lobby.scss";
 
 function Lobby() {
-  const { trivia, user } = useMyAppContext();
+  const { trivia, user, answers } = useTriviaContext();
   const { id } = useParams();
   const { getTriviaById } = useTrivia();
+  const navigate = useNavigate();
+  const { errorToast } = useNotificaiones();
 
   useEffect(() => {
     getTriviaById(id);
   }, []);
+
+  useEffect(() => {
+    console.log("Cambiaron las answers", { answers });
+    answers.length > 0
+      ? navigate(`/challenge/${trivia.id}`)
+      : errorToast("Hubo un error al traer las preguntas");
+  }, [answers]);
 
   return (
     <Layout>
@@ -45,3 +55,6 @@ function Lobby() {
 }
 
 export default Lobby;
+function errorToast(arg0: string) {
+  throw new Error("Function not implemented.");
+}
