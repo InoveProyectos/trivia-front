@@ -6,11 +6,9 @@ import { useEffect } from "react";
 
 function LoadScreen() {
   return (
-    <Layout>
-      <div className="container container-load-screen">
-        <InfinitySpin width="200" color="#4fa94d" />
-      </div>
-    </Layout>
+    <div className="container container-load-screen">
+      <InfinitySpin width="200" color="#4fa94d" />
+    </div>
   );
 }
 

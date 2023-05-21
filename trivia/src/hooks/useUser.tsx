@@ -1,43 +1,60 @@
 import { useContext, useEffect, useState } from "react";
-import { useTriviaContext } from "../Contexts/AppContext";
-import { SocketContext } from "../Contexts/SocketContext";
+import { useTriviaContext } from "../Contexts/TriviaContext";
+import socket from "../Contexts/Socket";
 
 const useUser = () => {
-  const { socket } = useContext(SocketContext);
   const { setUser, user } = useTriviaContext();
+  // const socket = io("http://localhost:4000");
 
-  const getUserByUsername = async (username: string) => {
-    if (!socket) {
-      return <div>No se pudo conectar con el servidor</div>;
-    }
+  // const getUserByUsername = (username?: string) => {
+  //   return new Promise((resolve, reject) => {
+  //     socket?.emit("getUserByUsername", { username: username });
 
-    socket.emit("getUserByUsername", { username: username });
+  //     socket?.on("getUserByUsernameRes", (data) => {
+  //       console.log(data);
+  //       if (data.hasOwnProperty("err")) {
+  //         errorToast(data.err);
+  //         reject(data.err);
+  //       } else {
+  //         const { res } = data;
+  //         console.log({ res });
+  //         const dataUser = {
+  //           username: res.username,
+  //           name: res.name,
+  //           is_staff: res.is_staff,
+  //           role: res.role,
+  //           score: res.score,
+  //           bonus: res.bonus,
+  //         };
+  //         setUser(dataUser);
 
+  //         resolve(res.username);
+  //       }
+  //     });
+  //   });
+  // };
+
+  const getUserByUsername = (username?: string) => {
     return new Promise((resolve, reject) => {
-      socket.on("getUserByUsernameRes", async (data) => {
-        try {
-          if (data.hasOwnProperty("err")) {
-            errorToast(data.err);
-            reject(data.err);
-          } else {
-            const { res } = data;
-            console.log({ res });
-            const dataUser = {
-              username: res.username,
-              name: res.name,
-              is_staff: res.is_staff,
-              role: res.role,
-              score: res.score,
-              bonus: res.bonus,
-            };
-            setUser(dataUser);
+      socket?.emit("getUserByUsername", { username }, (data: any) => {
+        console.log(data);
+        if (data.hasOwnProperty("err")) {
+          errorToast(data.err);
+          reject(data.err);
+        } else {
+          const { res } = data;
+          console.log({ res });
+          const dataUser = {
+            username: res.username,
+            name: res.name,
+            is_staff: res.is_staff,
+            role: res.role,
+            score: res.score,
+            bonus: res.bonus,
+          };
+          setUser(dataUser);
 
-            resolve(res.username);
-          }
-        } catch (err) {
-          console.log("ERROR", err);
-          errorToast(err);
-          reject(err);
+          resolve(res.username);
         }
       });
     });

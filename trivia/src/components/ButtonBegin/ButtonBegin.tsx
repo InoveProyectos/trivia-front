@@ -1,14 +1,12 @@
 import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useTriviaContext } from "../../Contexts/AppContext";
-import { SocketContext } from "../../Contexts/SocketContext";
+import { useTriviaContext } from "../../Contexts/TriviaContext";
 import useNotificaiones from "../../hooks/useNotificaiones";
 import useTrivia from "../../hooks/useTrivia";
 import { intAnswer, intRoomData } from "../../interfaces";
 import "./ButtonBegin.scss";
 
 function ButtonBegin({ roomCode }: intRoomData) {
-  const { socket } = useContext(SocketContext);
   const { answers } = useTriviaContext();
   const { startTrivia, listeningStartTrivia } = useTrivia();
   const { errorToast } = useNotificaiones();

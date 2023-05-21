@@ -1,50 +1,72 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { AppContext, useTriviaContext } from "../Contexts/AppContext";
-import { SocketContext } from "../Contexts/SocketContext";
+import { useTriviaContext } from "../Contexts/TriviaContext";
 import { intAnswer, intTrivia } from "../interfaces";
 import useNotificaiones from "./useNotificaiones";
+import socket from "../Contexts/Socket";
 
 const useTrivia = () => {
-  const { socket } = useContext(SocketContext);
   const { setTrivia, setAnswers, setIdChallengeActual, setCountUsersConected } =
     useTriviaContext();
   const { errorToast } = useNotificaiones();
   const navigate = useNavigate();
+  // const socket = io("http://localhost:4000");
 
   socket?.on("listenCountUsersConected", async (data) => {
     console.log(data);
     setCountUsersConected(data);
   });
 
-  const getTriviaById = async (id: string | number | undefined) => {
-    socket?.emit("get-triviaById", { id: id });
+  // const getTriviaById = (id?: string) => {
+  console.log(socket?.connected);
+  //   return new Promise((resolve, reject) => {
+  //     socket?.emit("get-triviaById", { id: id });
 
+  //     socket?.on("get-triviaById-res", (data) => {
+  //       console.log(data);
+  //       if (data.hasOwnProperty("err")) {
+  //         // errorToast(data.err);
+  //         reject(data.err);
+  //       } else {
+  //         const { res } = data;
+  //         console.log({ res });
+  //         const dataTrivia = {
+  //           id: res.id,
+  //           name: res.name,
+  //           description: res.description,
+  //           moderated: res.moderated,
+  //           end_date: res.end_date,
+  //         };
+  //         // setTrivia(dataTrivia);
+
+  //         resolve(res.id);
+  //       }
+  //     });
+  //   });
+  // };
+
+  const getTriviaById = (id?: string) => {
+    console.log(socket?.connected);
     return new Promise((resolve, reject) => {
-      socket?.on("get-triviaById-res", async (data) => {
-        try {
-          if (data.hasOwnProperty("err")) {
-            errorToast(data.err);
-            reject(data.err);
-          } else {
-            const { res } = data;
-            console.log({ res });
-            const dataTrivia = {
-              id: res.id,
-              name: res.name,
-              description: res.description,
-              moderated: res.moderated,
-              end_date: res.end_date,
-            };
-            setTrivia(dataTrivia);
+      socket?.emit("get-triviaById", { id: id }, (data: any) => {
+        console.log(data);
+        if (data.hasOwnProperty("err")) {
+          errorToast(data.err);
+          reject(data.err);
+        } else {
+          const { res } = data;
+          console.log({ res });
+          const dataTrivia = {
+            id: res.id,
+            name: res.name,
+            description: res.description,
+            moderated: res.moderated,
+            end_date: res.end_date,
+          };
+          setTrivia(dataTrivia);
 
-            resolve(res.id);
-          }
-        } catch (err) {
-          console.log("ERROR", err);
-          // errorToast(err);
-          reject(err);
+          resolve(res.id);
         }
       });
     });

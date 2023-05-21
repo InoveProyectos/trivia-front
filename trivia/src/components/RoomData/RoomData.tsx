@@ -1,7 +1,6 @@
 import EmojiPeopleIcon from "@mui/icons-material/EmojiPeople";
 import { useContext, useEffect } from "react";
-import { useTriviaContext } from "../../Contexts/AppContext";
-import { SocketContext } from "../../Contexts/SocketContext";
+import { useTriviaContext } from "../../Contexts/TriviaContext";
 import { intRoomData } from "../../interfaces";
 import ButtonCopy from "../ButtonCopy/ButtonCopy";
 import "./RoomData.scss";
