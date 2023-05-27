@@ -16,7 +16,6 @@ import { useAppContext } from "./Contexts/AppContext";
 import socket from "./Contexts/Socket";
 
 function App() {
-  const { loader, setLoader } = useAppContext();
   const [firstTime, setFirstTime] = useState<boolean>(true);
 
   // useEffect(() => {

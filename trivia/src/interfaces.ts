@@ -48,6 +48,10 @@ export interface intRoomData {
   roomCode?: number | null | undefined;
 }
 
+export interface btnBegin {
+  handleClick?: () => Promise<void>;
+}
+
 export interface intUser {
   username?: string;
   name?: string;
@@ -66,4 +70,10 @@ export interface intAnswer {
 export interface intAnswerOptions {
   index?: number;
   content?: string;
+}
+
+export interface resCall {
+  status: number;
+  messaje: string;
+  res?: any;
 }

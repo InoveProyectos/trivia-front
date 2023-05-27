@@ -55,11 +55,11 @@ export const TriviaContextProvider = ({
 
   const values: TriviaContextData = {
     trivia,
-    setTrivia: setTrivia,
+    setTrivia,
     user,
-    setUser: setUser,
+    setUser,
     answers,
-    setAnswers: setAnswers,
+    setAnswers,
     hasLink,
     setHasLink,
     idChallengeActual,

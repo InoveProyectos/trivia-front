@@ -3,7 +3,6 @@ import ReactDOM from "react-dom/client";
 import App from "./App";
 import { BrowserRouter } from "react-router-dom";
 import "./index.scss";
-// import { SocketProvider } from "./Contexts/SocketContext";
 import { TriviaContextProvider } from "./Contexts/TriviaContext";
 import { AppContextProvider } from "./Contexts/AppContext";
 

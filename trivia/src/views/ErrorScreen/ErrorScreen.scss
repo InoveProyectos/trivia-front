@@ -1,0 +1,23 @@
+@import "../../variables.scss";
+.errorScreen {
+  height: 100%;
+  width: 100%;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+
+  .error_img {
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+  }
+
+  .error_txt {
+    color: $gris-letras-claro;
+    font-size: 1.5rem;
+    font-weight: 500;
+  }
+}

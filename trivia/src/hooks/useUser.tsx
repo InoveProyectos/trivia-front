@@ -1,9 +1,11 @@
 import { useContext, useEffect, useState } from "react";
 import { useTriviaContext } from "../Contexts/TriviaContext";
 import socket from "../Contexts/Socket";
+import useErrorScreen from "./useErrorScreen";
 
 const useUser = () => {
   const { setUser, user } = useTriviaContext();
+  const { setErrorMensajeScreen } = useErrorScreen();
   // const socket = io("http://localhost:4000");
 
   // const getUserByUsername = (username?: string) => {
@@ -39,7 +41,7 @@ const useUser = () => {
       socket?.emit("getUserByUsername", { username }, (data: any) => {
         console.log(data);
         if (data.hasOwnProperty("err")) {
-          errorToast(data.err);
+          setErrorMensajeScreen("No se encontro el usuario");
           reject(data.err);
         } else {
           const { res } = data;
@@ -64,6 +66,3 @@ const useUser = () => {
 };
 
 export default useUser;
-function errorToast(err: any) {
-  throw new Error("Function not implemented.");
-}

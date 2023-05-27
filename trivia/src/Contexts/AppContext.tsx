@@ -1,8 +1,12 @@
 import React, { useContext, createContext, useState, Children } from "react";
 
 type AppContextData = {
-  loader: boolean;
-  setLoader: React.Dispatch<React.SetStateAction<boolean>>;
+  loaderScreen: boolean;
+  setLoaderScreen: React.Dispatch<React.SetStateAction<boolean>>;
+  errorScreen: boolean;
+  setErrorScreen: React.Dispatch<React.SetStateAction<boolean>>;
+  errorMensaje: string;
+  setErrorMensaje: React.Dispatch<React.SetStateAction<string>>;
 };
 
 export const AppContext = createContext<AppContextData>({} as AppContextData);
@@ -20,11 +24,17 @@ export const AppContextProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [loader, setLoader] = useState<boolean>(true);
+  const [loaderScreen, setLoaderScreen] = useState<boolean>(true);
+  const [errorScreen, setErrorScreen] = useState<boolean>(false);
+  const [errorMensaje, setErrorMensaje] = useState<string>("");
 
   const values: AppContextData = {
-    loader,
-    setLoader,
+    loaderScreen,
+    setLoaderScreen,
+    errorScreen,
+    setErrorScreen,
+    errorMensaje,
+    setErrorMensaje,
   };
 
   return <AppContext.Provider value={values}>{children}</AppContext.Provider>;

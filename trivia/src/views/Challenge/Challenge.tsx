@@ -54,53 +54,47 @@ function Challenge() {
   };
 
   return (
-    <>
-      {!showLoading ? (
-        <Layout>
-          <div className="cont-challenge">
-            <div className="child">
-              <Timmer initialTime={20} />
-              <Points points={2000} />
-            </div>
-            <div className="chlid-2">
-              <Statement
-                ask={answers[idChallegeNum].description}
-                remember={answers[idChallegeNum].name}
-              />
-              <div className="cont-answers">
-                {answers[idChallegeNum].options.map((answ) => {
-                  return (
-                    <Answer
-                      ansSelected={ansSelected}
-                      ans={answ}
-                      onSelected={handleSelected}
-                      disable={user.is_staff ? user.is_staff : undefined}
-                    />
-                  );
-                })}
-              </div>
-            </div>
-            <div>
-              {user.is_staff ? (
-                <SimpleButton
-                  onClick={() => {
-                    answers[idChallegeNum + 1]
-                      ? handleNextChallenge(id, idChallegeNum)
-                      : handleFinish;
-                  }}
-                >
-                  {answers[idChallegeNum + 1] ? "Siguente" : "Finalizar"}
-                </SimpleButton>
-              ) : (
-                <ButtonConfetti />
-              )}
-            </div>
+    <Layout>
+      <div className="cont-challenge">
+        <div className="child">
+          <Timmer initialTime={20} />
+          <Points points={2000} />
+        </div>
+        <div className="chlid-2">
+          <Statement
+            ask={answers[idChallegeNum].description}
+            remember={answers[idChallegeNum].name}
+          />
+          <div className="cont-answers">
+            {answers[idChallegeNum].options.map((answ) => {
+              return (
+                <Answer
+                  ansSelected={ansSelected}
+                  ans={answ}
+                  onSelected={handleSelected}
+                  disable={user.is_staff ? user.is_staff : undefined}
+                />
+              );
+            })}
           </div>
-        </Layout>
-      ) : (
-        <LoadScreen />
-      )}
-    </>
+        </div>
+        <div>
+          {user.is_staff ? (
+            <SimpleButton
+              onClick={() => {
+                answers[idChallegeNum + 1]
+                  ? handleNextChallenge(id, idChallegeNum)
+                  : handleFinish;
+              }}
+            >
+              {answers[idChallegeNum + 1] ? "Siguente" : "Finalizar"}
+            </SimpleButton>
+          ) : (
+            <ButtonConfetti />
+          )}
+        </div>
+      </div>
+    </Layout>
   );
 }
 

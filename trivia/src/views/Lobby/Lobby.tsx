@@ -12,59 +12,97 @@ import "./Lobby.scss";
 import useUser from "../../hooks/useUser";
 import { AppContext, useAppContext } from "../../Contexts/AppContext";
 import LoadScreen from "../LoadScreen/LoadScreen";
+import useErrorScreen from "../../hooks/useErrorScreen";
 
 function Lobby() {
   const { trivia, user, answers } = useTriviaContext();
   const { id, userName } = useParams();
   const { getTriviaById } = useTrivia();
   const { getUserByUsername } = useUser();
+  const { setLoaderScreen, setErrorScreen } = useContext(AppContext);
+  const { startTrivia } = useTrivia();
   const { errorToast } = useNotificaiones();
-  const { loader, setLoader } = useContext(AppContext);
-  // const { loader, setLoader } = useAppContext();
-  // const [loader, setLoader] = useState<boolean>(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getData = async () => {
       try {
-        await Promise.all([getTriviaById(id), getUserByUsername(userName)]);
-        setLoader(false);
+        await Promise.all([
+          getUserByUsername(userName),
+          getTriviaById(id, userName),
+        ]);
+        setLoaderScreen(false);
       } catch (err) {
-        errorToast("Hubo un error al encontrar la trivia o el usuario");
-        setLoader(false);
+        setLoaderScreen(false);
+        setErrorScreen(true);
       }
     };
-
     getData();
   }, []);
 
+  // useEffect(() => {
+
+  // const escuchando = async () => {
+  //   let res: any = await listeningStartTrivia();
+  //   console.log({ res });
+  //   res.length > 0
+  //     ? navigate(`/challenge/${roomCode}`)
+  //     : errorToast("Hubo un error al traer las preguntas");
+  // };
+
+  // escuchando();
+
+  const handleStartTrivia = async () => {
+    startTrivia(trivia.id)
+      .then((res: any) => {
+        console.log(res);
+        if (res.length > 0) {
+          navigate(`/challenge/${trivia.id}`);
+        } else {
+          errorToast("Hubo un error al traer las preguntas");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        errorToast(err.messaje);
+      });
+    // try {
+    // startTrivia(roomCode);
+    // let res: any = await listeningStartTrivia();
+    // console.log({ res });
+    // res.length > 0
+    //   ? navigate(`/challenge/${roomCode}`)
+    //   : errorToast("Hubo un error al traer las preguntas");
+    // } catch (err) {
+    //   console.log(err);
+    //   errorToast("Hubo un error");
+    // }
+  };
+
   return (
     <>
-      {loader ? (
-        <LoadScreen />
-      ) : (
-        <Layout>
-          <div className="cont-lobby">
-            <div className="titulo">
-              <h1>{trivia.name}</h1>
-            </div>
-            <div className="instructivo">
-              <span>¿Como se juega?</span>
-              <p>{trivia.description}</p>
-            </div>
-            <RoomData roomCode={trivia.id} />
-            <ButtonShare roomCode={trivia.id} />
-            {trivia.moderated ? (
-              user.role !== "estudiante" ? (
-                <ButtonBegin roomCode={trivia.id} />
-              ) : (
-                <Aviso txt="Esperando a que el anfitrion comience la trivia..." />
-              )
-            ) : (
-              <ButtonBegin roomCode={trivia.id} />
-            )}
+      <Layout>
+        <div className="cont-lobby">
+          <div className="titulo">
+            <h1>{trivia.name}</h1>
           </div>
-        </Layout>
-      )}
+          <div className="instructivo">
+            <span>¿Como se juega?</span>
+            <p>{trivia.description}</p>
+          </div>
+          <RoomData roomCode={trivia.id} />
+          {/* <ButtonShare roomCode={trivia.id} /> */}
+          {trivia.moderated ? (
+            user.role !== "estudiante" ? (
+              <ButtonBegin handleClick={handleStartTrivia} />
+            ) : (
+              <Aviso txt="Esperando a que el anfitrion comience la trivia..." />
+            )
+          ) : (
+            <ButtonBegin handleClick={handleStartTrivia} />
+          )}
+        </div>
+      </Layout>
     </>
   );
 }
