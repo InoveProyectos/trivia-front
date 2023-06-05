@@ -6,14 +6,16 @@ type TriviaContextData = {
   setTrivia: React.Dispatch<React.SetStateAction<intTrivia>>;
   user: intUser;
   setUser: React.Dispatch<React.SetStateAction<intUser>>;
-  answers: intAnswer[];
-  setAnswers: React.Dispatch<React.SetStateAction<intAnswer[]>>;
+  answers: intAnswer;
+  setAnswers: React.Dispatch<React.SetStateAction<intAnswer>>;
   hasLink?: boolean;
   setHasLink: React.Dispatch<React.SetStateAction<boolean>>;
   idChallengeActual: number;
   setIdChallengeActual: React.Dispatch<React.SetStateAction<number>>;
   countUsersConected: number;
   setCountUsersConected: React.Dispatch<React.SetStateAction<number>>;
+  correctAnswer?: number;
+  setCorrectAnswer: React.Dispatch<React.SetStateAction<number | undefined>>;
 };
 
 export const TriviaContext = createContext<TriviaContextData>(
@@ -34,7 +36,7 @@ export const TriviaContextProvider = ({
   children: React.ReactNode;
 }) => {
   const [trivia, setTrivia] = useState<intTrivia>({
-    id: null,
+    id: undefined,
     name: "",
     description: "",
     moderated: null,
@@ -48,10 +50,15 @@ export const TriviaContextProvider = ({
     score: null,
     bonus: null,
   });
-  const [answers, setAnswers] = useState<Array<intAnswer>>([] ?? []);
+  const [answers, setAnswers] = useState<intAnswer>({
+    name: "",
+    description: "",
+    options: [],
+  });
   const [hasLink, setHasLink] = useState<boolean>(false);
   const [idChallengeActual, setIdChallengeActual] = useState<number>(0);
   const [countUsersConected, setCountUsersConected] = useState<number>(0);
+  const [correctAnswer, setCorrectAnswer] = useState<number | undefined>();
 
   const values: TriviaContextData = {
     trivia,
@@ -66,6 +73,8 @@ export const TriviaContextProvider = ({
     setIdChallengeActual,
     countUsersConected,
     setCountUsersConected,
+    correctAnswer,
+    setCorrectAnswer,
   };
   return (
     <TriviaContext.Provider value={values}>{children}</TriviaContext.Provider>

@@ -1,9 +1,14 @@
 import SimpleButton from "../Buttons/SimpleButton";
-import { useState } from "react";
 import { intAnswerCom } from "../../interfaces";
 import "./Answer.scss";
 
-function Answer({ ansSelected, ans, onSelected, disable }: intAnswerCom) {
+function Answer({
+  ansSelected,
+  ans,
+  onSelected,
+  disable,
+  correctAnswer,
+}: intAnswerCom) {
   const estados: { [key: number]: string } = {
     0: "answer answer-selected",
     1: "answer answer-nonselected",
@@ -11,16 +16,20 @@ function Answer({ ansSelected, ans, onSelected, disable }: intAnswerCom) {
     3: "answer answer-success",
   };
 
-  console.log(ansSelected);
-
   const getEstado = (num?: number) => {
     if (ansSelected) {
-      console.log(num == ansSelected);
-      if (num == ansSelected) {
-        console.log(estados[0]);
-        return estados[0];
+      if (correctAnswer) {
+        if (correctAnswer == ansSelected) {
+          return estados[2];
+        } else {
+          return estados[3];
+        }
       } else {
-        return estados[1];
+        if (num == ansSelected) {
+          return estados[0];
+        } else {
+          return estados[1];
+        }
       }
     } else {
       return "answer";

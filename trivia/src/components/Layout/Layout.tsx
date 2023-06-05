@@ -7,19 +7,18 @@ import ErrorScreen from "../../views/ErrorScreen/ErrorScreen";
 
 interface intLayout {
   children?: React.ReactNode;
+  className?: string;
 }
 
-function Layout({ children }: intLayout) {
+function Layout({ children, className }: intLayout) {
   const { loaderScreen, errorScreen } = useContext(AppContext);
-
-  const getSpecialScreen = () => {};
 
   if (loaderScreen) return <LoadScreen />;
   if (errorScreen) return <ErrorScreen />;
   return (
     <>
       <Header />
-      <div className="contenedorPP">{children}</div>
+      <div className={"contenedorPP" + " " + className}>{children}</div>
     </>
   );
 }

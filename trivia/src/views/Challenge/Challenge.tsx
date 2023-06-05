@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Answer from "../../components/Answer/Answer";
 import ButtonConfetti from "../../components/ButtonConfetti/ButtonConfetti";
@@ -11,32 +11,25 @@ import { useTriviaContext } from "../../Contexts/TriviaContext";
 import useTrivia from "../../hooks/useTrivia";
 import LoadScreen from "../LoadScreen/LoadScreen";
 import "./Challenge.scss";
+import StudentAnswers from "../../components/StudentAnswers/StudentAnswers";
+import { AppContext } from "../../Contexts/AppContext";
 
 function Challenge() {
-  const { answers, user, idChallengeActual } = useTriviaContext();
-  const { id } = useParams();
+  const { trivia, answers, user, idChallengeActual, correctAnswer } =
+    useTriviaContext();
   const idChallegeNum = idChallengeActual;
   const [ansSelected, setAnsSelected] = useState<number>();
-  const { nextChallenge, finishTrivia } = useTrivia();
+  const { nextChallenge, finishTrivia, ValidarPregunta } = useTrivia();
   const [showLoading, setShowLoading] = useState<boolean>(false);
+  const { setLoaderScreen, setErrorScreen } = useContext(AppContext);
 
-  // useEffect(() => {
-  //   console.log("Cambio el challenge actual");
-  //   console.log("Llamar al loading page");
-  //   setShowLoading(true);
-  //   setTimeout(() => {
-  //     setShowLoading(true);
-  //     console.log("sacando loading page");
-  //   }, 3000);
-  // }, [idChallengeActual]);
-
-  const handleSelected = (num: number | undefined) => {
+  const handleSelected = (num?: number) => {
     setAnsSelected(num);
   };
 
   console.log({ ansSelected }, { answers }, { user }, { idChallengeActual });
 
-  const handleNextChallenge = (id?: string, idChallegeNum?: number) => {
+  const handleNextChallenge = (id?: number, idChallegeNum?: number) => {
     console.log("Siguiente challenge");
     nextChallenge(id, idChallegeNum);
 
@@ -49,50 +42,62 @@ function Challenge() {
     //Siempre que el profesor haga click en siguiente le manda al back una orden para que le diga a todos que se tienen que pasar al sig step, mandandole la orden que muestre un loading page
   };
 
-  const handleFinish = () => {
-    console.log("finalizo el challenge");
+  const handleFinishQuestion = () => {
+    //Muestra las preguntas correctas y las incorrectas
+    setLoaderScreen(true);
+    ValidarPregunta();
   };
 
+  // const handleFinish = () => {
+  //   console.log("finalizo el challenge");
+  // };
+
   return (
-    <Layout>
+    <Layout className="contenedorPP-challenge">
       <div className="cont-challenge">
         <div className="child">
           <Timmer initialTime={20} />
           <Points points={2000} />
         </div>
         <div className="chlid-2">
-          <Statement
-            ask={answers[idChallegeNum].description}
-            remember={answers[idChallegeNum].name}
-          />
+          <Statement ask={answers.description} remember={answers.name} />
           <div className="cont-answers">
-            {answers[idChallegeNum].options.map((answ) => {
+            <StudentAnswers />
+            {answers.options.map((answ) => {
               return (
                 <Answer
                   ansSelected={ansSelected}
                   ans={answ}
                   onSelected={handleSelected}
                   disable={user.is_staff ? user.is_staff : undefined}
+                  correctAnswer={correctAnswer}
                 />
               );
             })}
           </div>
         </div>
-        <div>
-          {user.is_staff ? (
-            <SimpleButton
-              onClick={() => {
-                answers[idChallegeNum + 1]
-                  ? handleNextChallenge(id, idChallegeNum)
-                  : handleFinish;
-              }}
-            >
-              {answers[idChallegeNum + 1] ? "Siguente" : "Finalizar"}
-            </SimpleButton>
-          ) : (
-            <ButtonConfetti />
-          )}
-        </div>
+      </div>
+      <div className="control-btn">
+        <SimpleButton
+          onClick={() => {
+            handleFinishQuestion();
+          }}
+          className="btn-continue"
+        >
+          Finalizar pregunta
+        </SimpleButton>
+        {/* {user.is_staff ? (
+          <SimpleButton
+            onClick={() => {
+              handleNextChallenge(trivia.id);
+            }}
+            className="btn-continue"
+          >
+            Siguiente
+          </SimpleButton>
+        ) : (
+          <ButtonConfetti />
+        )} */}
       </div>
     </Layout>
   );

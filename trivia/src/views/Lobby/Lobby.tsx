@@ -40,24 +40,13 @@ function Lobby() {
     getData();
   }, []);
 
-  // useEffect(() => {
-
-  // const escuchando = async () => {
-  //   let res: any = await listeningStartTrivia();
-  //   console.log({ res });
-  //   res.length > 0
-  //     ? navigate(`/challenge/${roomCode}`)
-  //     : errorToast("Hubo un error al traer las preguntas");
-  // };
-
-  // escuchando();
-
   const handleStartTrivia = async () => {
     startTrivia(trivia.id)
       .then((res: any) => {
         console.log(res);
         if (res.length > 0) {
-          navigate(`/challenge/${trivia.id}`);
+          console.log(res);
+          //TODO mostrar mensaje de exito al moderador
         } else {
           errorToast("Hubo un error al traer las preguntas");
         }
@@ -66,17 +55,6 @@ function Lobby() {
         console.log(err);
         errorToast(err.messaje);
       });
-    // try {
-    // startTrivia(roomCode);
-    // let res: any = await listeningStartTrivia();
-    // console.log({ res });
-    // res.length > 0
-    //   ? navigate(`/challenge/${roomCode}`)
-    //   : errorToast("Hubo un error al traer las preguntas");
-    // } catch (err) {
-    //   console.log(err);
-    //   errorToast("Hubo un error");
-    // }
   };
 
   return (
@@ -91,7 +69,6 @@ function Lobby() {
             <p>{trivia.description}</p>
           </div>
           <RoomData roomCode={trivia.id} />
-          {/* <ButtonShare roomCode={trivia.id} /> */}
           {trivia.moderated ? (
             user.role !== "estudiante" ? (
               <ButtonBegin handleClick={handleStartTrivia} />

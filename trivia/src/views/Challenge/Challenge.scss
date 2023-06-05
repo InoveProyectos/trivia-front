@@ -37,3 +37,21 @@
     }
   }
 }
+
+.contenedorPP-challenge {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.control-btn {
+  position: sticky;
+  bottom: 0;
+
+  .btn-continue {
+    width: 100%;
+    background-color: $verde-btn;
+    color: #fff;
+    border-color: $verde-btn;
+  }
+}

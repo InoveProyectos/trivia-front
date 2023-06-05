@@ -28,6 +28,7 @@ export interface intAnswerCom {
   ans: intAnswerOptions;
   onSelected: (num?: number) => void;
   disable: boolean | undefined;
+  correctAnswer?: number;
 }
 
 export interface intUseTriviaHook {
@@ -37,7 +38,7 @@ export interface intUseTriviaHook {
 }
 
 export interface intTrivia {
-  id?: number | null;
+  id?: number;
   name?: string;
   description?: string;
   moderated?: boolean | null;

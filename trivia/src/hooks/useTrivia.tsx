@@ -79,39 +79,36 @@ const useTrivia = () => {
     });
   };
 
-  // const listeningStartTrivia = () => {
-  //   return new Promise((res, rej) => {
   socket.on("startTriviaRes", async (data) => {
     try {
       if (data.hasOwnProperty("err")) {
         errorToast(data.err);
-        // rej(data.err);
       } else {
-        const resAnswers: Array<intAnswer> = data.challenges;
+        const resAnswers: intAnswer = data.challenges;
         console.log(data);
         console.log("dataTrivia", { resAnswers });
         setAnswers(resAnswers);
-        setIdChallengeActual(data.idChallengeActual);
         navigate(`/challenge/${data.id}`);
-        // res(resAnswers);
       }
     } catch (err) {
       console.log(err);
-      // rej(err);
     }
   });
-  //   });
-  // };
 
-  const nextChallenge = (roomCode?: string, idChallegeNum?: number) => {
-    socket.emit("nextChallenge");
-
-    //Ver como hacer para calificar
+  const ValidarPregunta = () => {
+    //Deberia de validar las respuestas y retornar la correcta
   };
 
-  socket.on("nextChallengeRes", (data) => {
-    console.log("Pasamos al siguiente paso de la trivia");
-    setIdChallengeActual(data.idChallengeActual);
+  const nextChallenge = (roomCode?: number, idChallegeNum?: number) => {
+    //TODO mostrar load screen, validar las preguntas, mostrar la pagina de respuestas, avanzar a la siguiente pregunta
+    socket.emit("nextChallenge", trivia.id, (data: any) => {
+      console.log(data);
+    });
+  };
+
+  socket.on("nextChallengeRes", (data: any) => {
+    // setIdChallengeActual(data.idChallengeActual);
+    setAnswers(data);
   });
 
   const finishTrivia = () => {
@@ -121,6 +118,7 @@ const useTrivia = () => {
   return {
     getTriviaById,
     startTrivia,
+    ValidarPregunta,
     nextChallenge,
     finishTrivia,
   };
