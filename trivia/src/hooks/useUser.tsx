@@ -56,7 +56,7 @@ const useUser = () => {
           };
           setUser(dataUser);
 
-          resolve(res.username);
+          resolve(res);
         }
       });
     });

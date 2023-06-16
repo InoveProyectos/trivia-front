@@ -27,10 +27,8 @@ function Lobby() {
   useEffect(() => {
     const getData = async () => {
       try {
-        await Promise.all([
-          getUserByUsername(userName),
-          getTriviaById(id, userName),
-        ]);
+        const username = await getUserByUsername(userName);
+        await getTriviaById(id, username);
         setLoaderScreen(false);
       } catch (err) {
         setLoaderScreen(false);

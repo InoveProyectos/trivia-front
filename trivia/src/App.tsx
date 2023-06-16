@@ -75,7 +75,7 @@ function App() {
       <Routes>
         {/* <Route path="/" element={<Home />} /> */}
         <Route path="/lobby/:id/:userName" element={<Lobby />} />
-        <Route path="/challenge/:id" element={<Challenge />} />
+        <Route path="/challenge" element={<Challenge />} />
         <Route
           path="/challenge/questionFinished"
           element={<QuestionFinished />}
