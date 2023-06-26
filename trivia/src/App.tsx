@@ -12,23 +12,39 @@ import LoadScreen from "./views/LoadScreen/LoadScreen";
 // import useTrivia from "./hooks/useTrivia";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useAppContext } from "./Contexts/AppContext";
+import { AppContext, useAppContext } from "./Contexts/AppContext";
 import socket from "./Contexts/Socket";
+import { useLocation, useParams } from "react-router-dom";
+import useTrivia from "./hooks/useTrivia";
+import useUser from "./hooks/useUser";
+import { useTriviaContext } from "./Contexts/TriviaContext";
+import useErrorScreen from "./hooks/useErrorScreen";
 
 function App() {
-  const [firstTime, setFirstTime] = useState<boolean>(true);
+  // const { trivia, user, answers } = useTriviaContext();
+  // const { id, userName } = useParams();
+  // const { getTriviaById } = useTrivia();
+  // const { getUserByUsername } = useUser();
+  // const { setLoaderScreen, setErrorScreen } = useContext(AppContext);
+  // const { setErrorMensajeScreen } = useErrorScreen();
+  // const location = useLocation();
 
   // useEffect(() => {
-  //   if (firstTime) {
-  //     setLoader(true);
-  //     setTimeout(() => {
-  //       setLoader(false);
-  //     }, 3000);
-  //     setFirstTime(false);
-  //   }
+  //   getData();
   // }, []);
 
-  // const location = useLocation();
+  // const getData = async () => {
+  //   try {
+  //     if (userName) {
+  //       const userNameRes = await getUserByUsername(userName);
+  //       await getTriviaById(id, userNameRes);
+  //       setLoaderScreen(false);
+  //     }
+  //   } catch (err) {
+  //     setLoaderScreen(false);
+  //     setErrorScreen(true);
+  //   }
+  // };
   // const { setHasLink } = useTriviaContext();
   // const { getTriviaById } = useTrivia();
   // const { id } = useParams();
@@ -75,12 +91,12 @@ function App() {
       <Routes>
         {/* <Route path="/" element={<Home />} /> */}
         <Route path="/lobby/:id/:userName" element={<Lobby />} />
-        <Route path="/challenge" element={<Challenge />} />
+        <Route path="/challenge/:id" element={<Challenge />} />
         <Route
-          path="/challenge/questionFinished"
+          path="/challenge/:id/questionFinished"
           element={<QuestionFinished />}
         />
-        <Route path="/challenge/finished" element={<Challengefinished />} />
+        <Route path="/challenge/:id/finished" element={<Challengefinished />} />
       </Routes>
       <ToastContainer
         position="bottom-right"

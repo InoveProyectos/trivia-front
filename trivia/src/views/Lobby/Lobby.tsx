@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Aviso from "../../components/Aviso/Aviso";
 import ButtonBegin from "../../components/ButtonBegin/ButtonBegin";
 import ButtonShare from "../../components/ButtonShare/ButtonShare";
@@ -10,9 +10,7 @@ import useNotificaiones from "../../hooks/useNotificaiones";
 import useTrivia from "../../hooks/useTrivia";
 import "./Lobby.scss";
 import useUser from "../../hooks/useUser";
-import { AppContext, useAppContext } from "../../Contexts/AppContext";
-import LoadScreen from "../LoadScreen/LoadScreen";
-import useErrorScreen from "../../hooks/useErrorScreen";
+import { AppContext } from "../../Contexts/AppContext";
 
 function Lobby() {
   const { trivia, user, answers } = useTriviaContext();
@@ -22,13 +20,12 @@ function Lobby() {
   const { setLoaderScreen, setErrorScreen } = useContext(AppContext);
   const { startTrivia } = useTrivia();
   const { errorToast } = useNotificaiones();
-  const navigate = useNavigate();
 
   useEffect(() => {
     const getData = async () => {
       try {
-        const username = await getUserByUsername(userName);
-        await getTriviaById(id, username);
+        const userNameRes = await getUserByUsername(userName);
+        await getTriviaById(id, userNameRes);
         setLoaderScreen(false);
       } catch (err) {
         setLoaderScreen(false);

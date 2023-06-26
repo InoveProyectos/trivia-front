@@ -1,6 +1,11 @@
 @import "../../variables.scss";
 
 .btn-confetti {
-  background-color: $azul;
-  border-color: $azul;
+  background-color: $verde-succes;
+  border-color: $verde-succes;
+}
+
+.btn-whitout-confetti {
+  background-color: $rojo-error;
+  border-color: $rojo-error;
 }

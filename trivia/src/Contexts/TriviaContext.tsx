@@ -14,8 +14,22 @@ type TriviaContextData = {
   setIdChallengeActual: React.Dispatch<React.SetStateAction<number>>;
   countUsersConected: number;
   setCountUsersConected: React.Dispatch<React.SetStateAction<number>>;
-  correctAnswer?: number;
+  correctAnswer: number | undefined;
   setCorrectAnswer: React.Dispatch<React.SetStateAction<number | undefined>>;
+  wonScore?: number;
+  setWonScore: React.Dispatch<React.SetStateAction<number | undefined>>;
+  blockAnswers: boolean;
+  setBlockAnswers: React.Dispatch<React.SetStateAction<boolean>>;
+  estadoTrivia: number;
+  setEstadoTrivia: React.Dispatch<React.SetStateAction<number>>;
+  estadoPregunta: number;
+  setEstadoPregunta: React.Dispatch<React.SetStateAction<number>>;
+  moreQuestions: boolean;
+  setMoreQuestions: React.Dispatch<React.SetStateAction<boolean>>;
+  cantResUsers: number;
+  setCantResUsers: React.Dispatch<React.SetStateAction<number>>;
+  ansSelected: number | undefined;
+  setAnsSelected: React.Dispatch<React.SetStateAction<number | undefined>>;
 };
 
 export const TriviaContext = createContext<TriviaContextData>(
@@ -59,6 +73,13 @@ export const TriviaContextProvider = ({
   const [idChallengeActual, setIdChallengeActual] = useState<number>(0);
   const [countUsersConected, setCountUsersConected] = useState<number>(0);
   const [correctAnswer, setCorrectAnswer] = useState<number | undefined>();
+  const [wonScore, setWonScore] = useState<number | undefined>();
+  const [blockAnswers, setBlockAnswers] = useState<boolean>(false);
+  const [estadoPregunta, setEstadoPregunta] = useState<number>(0);
+  const [estadoTrivia, setEstadoTrivia] = useState<number>(0);
+  const [moreQuestions, setMoreQuestions] = useState<boolean>(false);
+  const [cantResUsers, setCantResUsers] = useState<number>(0);
+  const [ansSelected, setAnsSelected] = useState<number>();
 
   const values: TriviaContextData = {
     trivia,
@@ -75,6 +96,20 @@ export const TriviaContextProvider = ({
     setCountUsersConected,
     correctAnswer,
     setCorrectAnswer,
+    wonScore,
+    setWonScore,
+    blockAnswers,
+    setBlockAnswers,
+    estadoPregunta,
+    setEstadoPregunta,
+    estadoTrivia,
+    setEstadoTrivia,
+    moreQuestions,
+    setMoreQuestions,
+    cantResUsers,
+    setCantResUsers,
+    ansSelected,
+    setAnsSelected,
   };
   return (
     <TriviaContext.Provider value={values}>{children}</TriviaContext.Provider>

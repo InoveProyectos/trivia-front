@@ -1,6 +1,8 @@
 import SimpleButton from "../Buttons/SimpleButton";
 import { intAnswerCom } from "../../interfaces";
 import "./Answer.scss";
+import { useEffect } from "react";
+import { useTriviaContext } from "../../Contexts/TriviaContext";
 
 function Answer({
   ansSelected,
@@ -9,6 +11,7 @@ function Answer({
   disable,
   correctAnswer,
 }: intAnswerCom) {
+  const { blockAnswers } = useTriviaContext();
   const estados: { [key: number]: string } = {
     0: "answer answer-selected",
     1: "answer answer-nonselected",
@@ -19,10 +22,10 @@ function Answer({
   const getEstado = (num?: number) => {
     if (ansSelected) {
       if (correctAnswer) {
-        if (correctAnswer == ansSelected) {
-          return estados[2];
-        } else {
+        if (correctAnswer == num) {
           return estados[3];
+        } else {
+          return estados[2];
         }
       } else {
         if (num == ansSelected) {
@@ -39,7 +42,9 @@ function Answer({
   return (
     <SimpleButton
       className={getEstado(ans.index)}
-      onClick={() => onSelected(ans.index)}
+      onClick={() => {
+        if (!blockAnswers) onSelected(ans.index);
+      }}
       disabled={disable}
     >
       {ans.content}

@@ -2,14 +2,19 @@ import confetti, { Options } from "canvas-confetti";
 import { useEffect } from "react";
 import SimpleButton from "../Buttons/SimpleButton";
 import "./ButtonConfetti.scss";
+import { useTriviaContext } from "../../Contexts/TriviaContext";
 
-function ButtonConfetti() {
+function ButtonConfetti({ showConfetti }: { showConfetti?: boolean }) {
+  const { wonScore } = useTriviaContext();
+
   useEffect(() => {
-    const intervalId = setInterval(handleClick, 1500);
+    if (showConfetti) {
+      const intervalId = setInterval(handleClick, 1500);
 
-    setTimeout(() => {
-      clearInterval(intervalId);
-    }, 6000);
+      setTimeout(() => {
+        clearInterval(intervalId);
+      }, 6000);
+    }
   }, []);
 
   const handleClick = () => {
@@ -51,8 +56,17 @@ function ButtonConfetti() {
   };
 
   return (
-    <SimpleButton className="btn btn-confetti" onClick={handleClick}>
-      +200 Puntos 🎉
+    <SimpleButton
+      className={`btn ${
+        showConfetti ? "btn-confetti" : "btn-whitout-confetti"
+      }`}
+      onClick={() => {
+        if (showConfetti) handleClick();
+      }}
+    >
+      {showConfetti
+        ? `+${wonScore} Puntos🎉`
+        : "No ganaste putnos, segui intentandolo"}
     </SimpleButton>
   );
 }

@@ -15,7 +15,7 @@ export interface intTimmer {
 }
 
 export interface intPoints {
-  points: number;
+  points?: number | null;
 }
 
 export interface intStatement {

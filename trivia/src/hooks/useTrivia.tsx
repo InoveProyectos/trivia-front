@@ -15,6 +15,14 @@ const useTrivia = () => {
     setAnswers,
     setIdChallengeActual,
     setCountUsersConected,
+    setWonScore,
+    setCorrectAnswer,
+    setBlockAnswers,
+    setEstadoPregunta,
+    setEstadoTrivia,
+    setMoreQuestions,
+    setCantResUsers,
+    setAnsSelected,
   } = useTriviaContext();
   const { errorToast } = useNotificaiones();
   const { setErrorMensajeScreen } = useErrorScreen();
@@ -86,7 +94,8 @@ const useTrivia = () => {
         console.log(data);
         console.log("dataTrivia", { resAnswers });
         setAnswers(resAnswers);
-        navigate(`/challenge`);
+        setMoreQuestions(data.moreQuestions);
+        navigate(`/challenge/${trivia.id}`);
       }
     } catch (err) {
       console.log(err);
@@ -102,10 +111,10 @@ const useTrivia = () => {
   };
 
   const ValidarPregunta = () => {
-    socket.emit("showLoader", {
-      id: trivia.id,
-      show: true,
-    });
+    // socket.emit("showLoader", {
+    //   id: trivia.id,
+    //   show: true,
+    // });
 
     socket.emit("validarPreguntas", {
       id: trivia.id,
@@ -116,28 +125,53 @@ const useTrivia = () => {
     setLoaderScreen(data);
   });
 
-  socket.on("validarPreguntasRes", (data: any) => {
-    data.map((userRes: any) => {
-      if (userRes.id == user.username) {
-        const dataUser = user;
-        dataUser.score = userRes.score;
-        setUser(dataUser);
-      }
-    });
+  socket.on("estadoTrivia", (data: any) => {
+    console.log("cambio el estado de la trivia a: " + data);
+    setEstadoTrivia(data);
+  });
 
+  socket.on("estadoPregunta", (data: any) => {
+    console.log("cambio el estado de la Pregunta a: " + data);
+    setEstadoPregunta(data);
+  });
+
+  socket.on("validarPreguntasRes", (data: any) => {
+    const dataUser = user;
+    if (user.username) {
+      data.map((userRes: any) => {
+        if (userRes.id == user.username) {
+          setWonScore(userRes.score);
+          dataUser.score = +userRes.score;
+          setUser(dataUser);
+        }
+      });
+      console.log("USER", user);
+      setBlockAnswers(true);
+      setLoaderScreen(false);
+    }
     //TODO Probar con la el back de desafio arriba
     //TODO Falta armar que muestre las preguntas incorrectas y agregar para que pase de challenge
   });
 
-  const nextChallenge = (roomCode?: number, idChallegeNum?: number) => {
-    // socket.emit("nextChallenge", trivia.id, (data: any) => {
-    //   console.log(data);
-    // });
+  socket.on("resPlayers", (data) => {
+    setCantResUsers(data);
+  });
+
+  const nextChallenge = () => {
+    socket.emit("nextChallenge", trivia.id, (data: any) => {
+      console.log(data);
+    });
   };
 
   socket.on("nextChallengeRes", (data: any) => {
-    // setIdChallengeActual(data.idChallengeActual);
-    setAnswers(data);
+    setAnswers(data.challenge);
+    setEstadoPregunta(data.estadoPregunta);
+    setCantResUsers(data.cantResUsers);
+    setCorrectAnswer(undefined);
+    setAnsSelected(undefined);
+    setBlockAnswers(false);
+    setWonScore(undefined);
+    setLoaderScreen(false);
   });
 
   const finishTrivia = () => {
