@@ -13,7 +13,7 @@ import useUser from "../../hooks/useUser";
 import { AppContext } from "../../Contexts/AppContext";
 
 function Lobby() {
-  const { trivia, user, answers } = useTriviaContext();
+  const { trivia, user } = useTriviaContext();
   const { id, userName } = useParams();
   const { getTriviaById } = useTrivia();
   const { getUserByUsername } = useUser();
@@ -24,7 +24,7 @@ function Lobby() {
   useEffect(() => {
     const getData = async () => {
       try {
-        const userNameRes = await getUserByUsername(userName);
+        const userNameRes = await getUserByUsername(userName, id);
         await getTriviaById(id, userNameRes);
         setLoaderScreen(false);
       } catch (err) {

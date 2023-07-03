@@ -11,7 +11,7 @@ function Answer({
   disable,
   correctAnswer,
 }: intAnswerCom) {
-  const { blockAnswers } = useTriviaContext();
+  const { blockAnswers, estadoPregunta } = useTriviaContext();
   const estados: { [key: number]: string } = {
     0: "answer answer-selected",
     1: "answer answer-nonselected",
@@ -21,7 +21,7 @@ function Answer({
 
   const getEstado = (num?: number) => {
     if (ansSelected) {
-      if (correctAnswer) {
+      if (estadoPregunta == 2) {
         if (correctAnswer == num) {
           return estados[3];
         } else {

@@ -143,6 +143,7 @@ const useTrivia = () => {
           setWonScore(userRes.score);
           dataUser.score = +userRes.score;
           setUser(dataUser);
+          setCorrectAnswer(userRes.correctAnswer);
         }
       });
       console.log("USER", user);

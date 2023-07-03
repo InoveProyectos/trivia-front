@@ -10,7 +10,6 @@ import { useTriviaContext } from "../../Contexts/TriviaContext";
 import useTrivia from "../../hooks/useTrivia";
 import "./Challenge.scss";
 import StudentAnswers from "../../components/StudentAnswers/StudentAnswers";
-import { AppContext } from "../../Contexts/AppContext";
 
 function Challenge() {
   const {
@@ -39,23 +38,16 @@ function Challenge() {
   const [showConfetti, setShowConfetti] = useState<boolean | undefined>(false);
 
   useEffect(() => {
-    if (wonScore != undefined) {
+    if (estadoPregunta == 2) {
       if (wonScore != 0) {
-        setCorrectAnswer(ansSelected);
         setShowScore(true);
         setShowConfetti(true);
       } else {
-        setCorrectAnswer(undefined); //TODO Setear aca con el ans correcto
-        setShowScore(true);
+        setShowScore(false);
         setShowConfetti(false);
       }
     }
   }, [wonScore]);
-
-  useEffect(() => {
-    console.log({ estadoTrivia });
-    console.log({ estadoPregunta });
-  });
 
   const handleSelected = (num?: number) => {
     setAnsSelected(num);

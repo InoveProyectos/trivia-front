@@ -64,9 +64,7 @@ function ButtonConfetti({ showConfetti }: { showConfetti?: boolean }) {
         if (showConfetti) handleClick();
       }}
     >
-      {showConfetti
-        ? `+${wonScore} Puntos🎉`
-        : "No ganaste putnos, segui intentandolo"}
+      {`+${wonScore} Puntos🎉`}
     </SimpleButton>
   );
 }

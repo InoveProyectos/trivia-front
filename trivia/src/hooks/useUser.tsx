@@ -9,7 +9,7 @@ const useUser = () => {
   const { setUser, user } = useTriviaContext();
   const { setErrorMensajeScreen } = useErrorScreen();
 
-  const getUserByUsername = (username?: string) => {
+  const getUserByUsername = (username?: string, id?: string) => {
     return new Promise((resolve, reject) => {
       let userInStorage = sessionStorage.getItem("uTriv");
       if (userInStorage) {
@@ -17,7 +17,7 @@ const useUser = () => {
         setUser(userAux);
         resolve(userAux);
       } else {
-        socket?.emit("getUserByUsername", { username }, (data: any) => {
+        socket?.emit("getUserByUsername", { username, id }, (data: any) => {
           console.log(data);
           if (data.hasOwnProperty("err")) {
             setErrorMensajeScreen(
