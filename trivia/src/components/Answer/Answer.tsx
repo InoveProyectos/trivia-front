@@ -43,7 +43,7 @@ function Answer({
     <SimpleButton
       className={getEstado(ans.index)}
       onClick={() => {
-        if (!blockAnswers) onSelected(ans.index);
+        if (!blockAnswers && onSelected) onSelected(ans.index);
       }}
       disabled={disable}
     >

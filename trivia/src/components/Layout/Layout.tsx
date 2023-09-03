@@ -4,6 +4,7 @@ import LoadScreen from "../../views/LoadScreen/LoadScreen";
 import { useContext } from "react";
 import { AppContext } from "../../Contexts/AppContext";
 import ErrorScreen from "../../views/ErrorScreen/ErrorScreen";
+import { PageRealoadDetector } from "../PageReloadDetector/PageReloadDetector";
 
 interface intLayout {
   children?: React.ReactNode;
@@ -18,6 +19,7 @@ function Layout({ children, className }: intLayout) {
   return (
     <>
       <Header />
+      <PageRealoadDetector />
       <div className={"contenedorPP" + " " + className}>{children}</div>
     </>
   );

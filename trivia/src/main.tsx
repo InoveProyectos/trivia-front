@@ -5,9 +5,11 @@ import { BrowserRouter } from "react-router-dom";
 import "./index.scss";
 import { TriviaContextProvider } from "./Contexts/TriviaContext";
 import { AppContextProvider } from "./Contexts/AppContext";
+import { PageRealoadDetector } from "./components/PageReloadDetector/PageReloadDetector";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
+    {/* <PageRealoadDetector /> */}
     {/* <SocketProvider> */}
     <TriviaContextProvider>
       <AppContextProvider>

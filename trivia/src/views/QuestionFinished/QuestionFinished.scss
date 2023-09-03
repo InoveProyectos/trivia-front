@@ -16,3 +16,31 @@
     border-color: $verde-btn;
   }
 }
+
+@media only screen and (min-width: 768px) {
+  .cont-question-finished {
+    .cont-question-finished-data {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 1rem;
+      align-content: center;
+      justify-content: center;
+      justify-items: center;
+      align-items: center;
+      grid-template-areas:
+          "r a"
+          "b a";
+    }
+    .cont-data-with-doughnut{
+      grid-area: a;
+      width: 100%;
+    }
+    .respondieron{
+      grid-area: r;
+    }
+    .respondieronBien{
+      grid-area: b;
+    }
+  }
+}

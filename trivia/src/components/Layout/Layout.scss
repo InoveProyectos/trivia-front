@@ -1,10 +1,12 @@
 .contenedorPP {
   width: 100vw;
+  max-width: 1000px;
   height: calc(100vh - 50px);
   min-height: 500px;
   min-width: 320px;
   // background-color: aquamarine;
   padding: 1rem 0.5rem 0.5rem;
+  margin: auto;
 }
 
 .contenedorPPSpecial {

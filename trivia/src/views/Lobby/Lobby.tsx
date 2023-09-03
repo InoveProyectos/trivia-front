@@ -13,7 +13,7 @@ import useUser from "../../hooks/useUser";
 import { AppContext } from "../../Contexts/AppContext";
 
 function Lobby() {
-  const { trivia, user } = useTriviaContext();
+  const { trivia, user, setFirstData } = useTriviaContext();
   const { id, userName } = useParams();
   const { getTriviaById } = useTrivia();
   const { getUserByUsername } = useUser();
@@ -25,7 +25,16 @@ function Lobby() {
     const getData = async () => {
       try {
         const userNameRes = await getUserByUsername(userName, id);
-        await getTriviaById(id, userNameRes);
+        const triviaRes = await getTriviaById(id, userNameRes);
+        if(triviaRes && userNameRes){
+          const dataToSave = {
+            userInfo: userNameRes,
+            triviaInfo: trivia,
+            date: Date.now(),
+          }
+          localStorage.setItem('lastReloadTime', JSON.stringify(dataToSave));
+          setFirstData(true)
+        }
         setLoaderScreen(false);
       } catch (err) {
         setLoaderScreen(false);

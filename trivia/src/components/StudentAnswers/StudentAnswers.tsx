@@ -1,3 +1,4 @@
+import "./StudentAnswers.scss"
 function StudentAnswers({
   usersInRoom,
   cantRes,
@@ -6,7 +7,7 @@ function StudentAnswers({
   cantRes: number;
 }) {
   return (
-    <div>
+    <div className="cant-res">
       Rerspondieron {cantRes}/{usersInRoom - 1}
     </div>
   );

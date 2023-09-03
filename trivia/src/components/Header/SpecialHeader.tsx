@@ -5,8 +5,8 @@ import "./SpecialHeader.scss";
 function SpecialHeader() {
   return (
     <div className="special-header">
-      <img alt="trivia" className="img-logo-trivia" src={imgLogoTrivia} />
-      <img alt="wave" src={imgWaveFinal} />
+      <img alt="trivia" className="img-logo-trivia-special-header" src={imgLogoTrivia} />
+      <img alt="wave" className="wave-special-header" src={imgWaveFinal} />
     </div>
   );
 }

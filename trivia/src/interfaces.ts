@@ -26,7 +26,7 @@ export interface intStatement {
 export interface intAnswerCom {
   ansSelected?: number;
   ans: intAnswerOptions;
-  onSelected: (num?: number) => void;
+  onSelected?: (num?: number) => void;
   disable: boolean | undefined;
   correctAnswer?: number;
 }
@@ -77,4 +77,9 @@ export interface resCall {
   status: number;
   messaje: string;
   res?: any;
+}
+
+export interface infoChallengeChart {
+  opciones: string[];
+  respuestas: number[];
 }

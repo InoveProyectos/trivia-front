@@ -35,6 +35,18 @@
       gap: 15px;
       margin: 20px 0;
     }
+
+    @media only screen and (min-width: 768px) {
+      .cont-answers {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 100px 100px;
+        gap: 16px 50px;
+        justify-items: center;
+        max-width: 800px;
+        margin: 2rem auto;
+      }
+    }
   }
 }
 
@@ -50,6 +62,7 @@
 
   .btn-continue {
     width: 100%;
+    max-width: 500px;
     background-color: $verde-btn;
     color: #fff;
     border-color: $verde-btn;

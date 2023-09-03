@@ -10,6 +10,12 @@
   transition: all 0.2s ease-in-out;
 }
 
+@media only screen and (min-width: 768px) {
+  .answer{
+    height: 100% !important;
+  }
+}
+
 .answer-selected {
   background-color: #ffffff;
   color: #000;

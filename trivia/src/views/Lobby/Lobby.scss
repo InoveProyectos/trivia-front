@@ -10,10 +10,11 @@
     display: flex;
     flex-direction: column;
     width: 90%;
+    max-width: 500px;
     margin: 10px auto;
     border: 2px solid $verde-oscuro;
     border-radius: 6px;
-    padding: 0.5rem 1rem;
+    padding: 1rem 1rem;
     overflow: auto;
     max-height: 200px;
     background-color: $verde-oscuro-opacity;

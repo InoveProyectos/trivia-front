@@ -2,16 +2,17 @@ import React from "react";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import "./InfoChallengeChart.scss";
+import { infoChallengeChart } from "../../interfaces";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-function InfoChallengeChart() {
+function InfoChallengeChart({ opciones, respuestas }: infoChallengeChart) {
   const data = {
-    labels: ["Preg #1", "Preg #2", "Preg #3", "Preg #4"],
+    labels: opciones,
     datasets: [
       {
         label: "Respuestas",
-        data: [24, 50, 25, 1],
+        data: respuestas,
         backgroundColor: [
           "rgba(255, 99, 132, 0.5)",
           "rgba(54, 162, 235, 0.5)",
