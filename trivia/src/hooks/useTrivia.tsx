@@ -8,11 +8,13 @@ import socket from "../Contexts/Socket";
 import useErrorScreen from "./useErrorScreen";
 import { AppContext } from "../Contexts/AppContext";
 import useTriviaListeners from "./useTriviaListeners";
+import useTextos from "./useTextos";
 
 const useTrivia = () => {
   const {
     trivia,
     firstData,
+    nameRoom,
     setTrivia,
     setAnswers,
     setIdChallengeActual,
@@ -29,18 +31,15 @@ const useTrivia = () => {
     setCantResOpciones,
     setCantOpciones,
     setCantResCorrectas,
+    setNameRoom
   } = useTriviaContext();
-  const { errorToast } = useNotificaiones();
+  const { errorToast, infoToast } = useNotificaiones();
   const { setErrorMensajeScreen } = useErrorScreen();
   const { user, setUser } = useTriviaContext();
   const { quitLoader } = useTriviaListeners();
   const navigate = useNavigate();
   const { setLoaderScreen, setErrorScreen } = useContext(AppContext);
-
-  // socket.on("listenCountUsersConected", async (data) => {
-  //   console.log(data);
-  //   setCountUsersConected(data);
-  // });
+  const { searchTextByKey } = useTextos();
 
   const setLoader = (show: boolean) => {
     setTimeout(() => {
@@ -48,75 +47,96 @@ const useTrivia = () => {
     }, 2000);
   };
 
-  const getTriviaById = (id?: string, user?: any) => {
-    console.log(socket?.connected);
+  const getTriviaById = async (id?: string, user?: any) => {
+    // console.log(socket?.connected);
+  
+    const handleTriviaData = async (data: any) => {
+      console.log(data);
+      let { trivia, triviaIniciada, triviaFinalizada, nameRoom } = data;
+  
+      if (data.hasOwnProperty("err")) {
+        setErrorMensajeScreen("err.trivia.notfound");
+        return Promise.reject(data.err);
+      } else {
+        if (triviaIniciada) {
+          infoToast(searchTextByKey("inf.trivia.iniciada"));
+          try {
+            let resReloadTrivia = await handleReload(trivia, user);
+            console.log(resReloadTrivia);
+            navigate(`/challenge/${trivia.id}`);
+          } catch (error) {
+            console.error(error);
+            errorToast(searchTextByKey("err.trivia.generic"));
+          }
+        }
+        if (triviaFinalizada) {
+          setErrorMensajeScreen(searchTextByKey("err.trivia.finalizada"));
+          return Promise.reject();
+        }
+        setNameRoom(nameRoom)
+        const dataTrivia = {
+          id: trivia.id,
+          name: trivia.name,
+          description: trivia.description,
+          moderated: trivia.moderated,
+          end_date: trivia.end_date,
+        };
+        const dataToSave = {
+          userInfo: user,
+          triviaInfo: trivia,
+          date: Date.now(),
+        };
+        localStorage.setItem("lastReloadTime", JSON.stringify(dataToSave));
+        setTrivia(dataTrivia);
+  
+        return Promise.resolve(trivia);
+      }
+    };
+  
     return new Promise((resolve, reject) => {
       socket.emit("get-triviaById", { id: id, user: user }, (data: any) => {
-        console.log(data);
-        if (data.hasOwnProperty("err")) {
-          setErrorMensajeScreen("No se encontro la trivia");
-          reject(data.err);
-        } else {
-          const { res } = data;
-          console.log({ res });
-          const dataTrivia = {
-            id: res.id,
-            name: res.name,
-            description: res.description,
-            moderated: res.moderated,
-            end_date: res.end_date,
-          };
-          const dataToSave = {
-            userInfo: user,
-            triviaInfo: trivia,
-            date: Date.now(),
-          };
-          localStorage.setItem("lastReloadTime", JSON.stringify(dataToSave));
-          // sessionStorage.setItem("iTriv", JSON.stringify(dataTrivia));
-          setTrivia(dataTrivia);
-
-          resolve(res);
-        }
+        handleTriviaData(data)
+          .then((trivia) => {
+            resolve(trivia);
+          })
+          .catch((error) => {
+            reject(error);
+          });
       });
     });
   };
 
   const startTrivia = async (id?: number | null) => {
     return new Promise((res, rej) => {
-      let params;
-      if (trivia.moderated) {
-        params = {
+      let params = {
           id: id,
-        };
-      } else {
-        params = {
-          id: id,
-          username: user.username,
-        };
+          nameRoom: nameRoom
       }
-      socket.emit("startTrivia", params, (data: resCall) => {
+      socket.emit("startTrivia", params , (data: resCall) => {
         console.log(data);
         if (data.status != 200) {
           rej(data.messaje);
         } else {
           console.log(data);
+          res(data)
         }
       });
     });
   };
 
-  const handleReload = async (triviaInfo?: any, userInfo?: any) => {
+  const handleReload = async (triviaInfo?: any, userInfo?: any, nameRoom?: any) => {
     return new Promise((res, rej) => {
       let params = {
-        triviaInfo: triviaInfo,
         username: userInfo.username,
+        nameRoom: nameRoom
       };
       setTrivia(triviaInfo);
       setUser(userInfo);
+      setNameRoom(nameRoom)
       socket.emit("ReloadTrivia", params, (response: any) => {
-        // if (!firstData) {
           console.log(response);
           if (response.status != 200) {
+            rej({status: response.status, message: "Hubo un problema al cargar la trivia"})
           } else {
             if (Object.keys(response.data).length === 0) {
               setLoader(false);
@@ -151,111 +171,51 @@ const useTrivia = () => {
                   setCorrectAnswer(userRes.correctAnswer);
                 }
               });
-
+              res({status: response.status, message: "La trivia se cargo correctamente"})
               setLoader(false);
             }
           }
-        // }
       });
     });
   };
 
-  // socket.on("startTriviaRes", async (data) => {
-  //   try {
-  //     if (data.hasOwnProperty("err")) {
-  //       errorToast(data.err);
-  //     } else {
-  //       const resAnswers: intAnswer = data.challenges;
-  //       console.log(data);
-  //       console.log("dataTrivia", { resAnswers });
-  //       setAnswers(resAnswers);
-  //       setMoreQuestions(data.moreQuestions);
-  //       navigate(`/challenge/${trivia.id}`);
-  //     }
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // });
-
   const sendAnsSelected = (ans?: number) => {
     socket.emit("ansSelected", {
       userName: user.username,
-      id: trivia.id,
+      nameRoom: nameRoom,
       res: ans,
+    }, (res: any)=>{
+      console.log(res)
+      //TODO Manejar correctamente este error
     });
   };
 
   const ValidarPregunta = () => {
     socket.emit("validarPreguntas", {
-      id: trivia.id,
+      nameRoom: nameRoom
+    }, (data: any)=>{
+      console.log(data);
+      //TODO Manejar correctamente este error
     });
   };
 
-  // socket.on("showLoaderRes", (data: boolean) => {
-  //   setLoaderScreen(data);
-  // });
-
-  // socket.on("estadoTrivia", (data: any) => {
-  //   console.log("cambio el estado de la trivia a: " + data);
-  //   setEstadoTrivia(data);
-  // });
-
-  // socket.on("estadoPregunta", (data: any) => {
-  //   console.log("cambio el estado de la Pregunta a: " + data);
-  //   setEstadoPregunta(data);
-  // });
-
-  // socket.on("validarPreguntasRes", (data: any) => {
-  //   const dataUser = user;
-  //   if (user.username) {
-  //     data.map((userRes: any) => {
-  //       if (userRes.id == user.username) {
-  //         setWonScore(userRes.score);
-  //         dataUser.score = +userRes.score;
-  //         setUser(dataUser);
-  //         setCorrectAnswer(userRes.correctAnswer);
-  //       }
-  //     });
-  //     console.log("USER", user);
-  //     setBlockAnswers(true);
-  //     setLoaderScreen(false);
-  //   }
-  //   //TODO Probar con la el back de desafio arriba
-  //   //TODO Falta armar que muestre las preguntas incorrectas y agregar para que pase de challenge
-  // });
-
-  // socket.on("resPlayers", (data) => {
-  //   setCantResUsers(data);
-  // });
-
   const nextChallenge = () => {
-    socket.emit("nextChallenge", trivia.id, (data: any) => {
+    socket.emit("nextChallenge", {
+      nameRoom: nameRoom
+    }, (data: any) => {
+      //TODO Manejar correctamente este error
       console.log(data);
     });
   };
 
-  // socket.on("nextChallengeRes", (data: any) => {
-  //   setAnswers(data.challenge);
-  //   setEstadoPregunta(data.estadoPregunta);
-  //   setCantResUsers(data.cantResUsers);
-  //   setCorrectAnswer(undefined);
-  //   setAnsSelected(undefined);
-  //   setBlockAnswers(false);
-  //   setWonScore(undefined);
-  //   setLoaderScreen(false);
-  //   setMoreQuestions(data.moreQuestions);
-  // });
-
   const EndTrivia = () => {
-    socket.emit("endTrivia", trivia.id, (data: any) => {
+    socket.emit("endTrivia", {
+      nameRoom: nameRoom
+    }, (data: any) => {
       console.log("sagarnaga");
+      //TODO Manejar correctamente este error
     });
   };
-
-  // socket.on("resEndTrivia", (data: any) => {
-  //   navigate(`/challenge/:${trivia.id}/finished`);
-  //   setLoaderScreen(false);
-  // });
 
   return {
     getTriviaById,

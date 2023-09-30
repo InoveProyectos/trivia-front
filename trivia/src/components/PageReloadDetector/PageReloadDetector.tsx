@@ -3,7 +3,7 @@ import { useTriviaContext } from "../../Contexts/TriviaContext";
 import useTrivia from "../../hooks/useTrivia";
 
 export const PageRealoadDetector = () => {
-  const { trivia, user, firstData} = useTriviaContext();
+  const { trivia, user, firstData, nameRoom} = useTriviaContext();
   const {handleReload} = useTrivia()
   const handlePageUnload = ()=>{
     if(user.username && trivia.id){
@@ -11,6 +11,7 @@ export const PageRealoadDetector = () => {
         userInfo: user,
         triviaInfo: trivia,
         date: Date.now(),
+        nameRoom: nameRoom
       }
       localStorage.setItem('lastReloadTime', JSON.stringify(dataToSave));
     }
@@ -25,12 +26,13 @@ export const PageRealoadDetector = () => {
   }, []);
 
   useEffect(() => {
-    console.log("la pagina fue recargada!!!!!!")
+    // console.log("la pagina fue recargada!!!!!!")
     let dataReload = localStorage.getItem('lastReloadTime');
     if(dataReload){//si existe hago algo y lo elimino sino la abrio por primera vez
       let data = JSON.parse(dataReload)
-      if(Object.keys(data).length > 0 && data.triviaInfo.id && data.userInfo.username){
-        handleReload(data.triviaInfo, data.userInfo);
+      let {triviaInfo, userInfo, nameRoom} = data
+      if(Object.keys(data).length > 0 && triviaInfo.id && userInfo.username && nameRoom){
+        handleReload(triviaInfo, userInfo, nameRoom);
       }
       //Llamar a la funcion que se traiga la data
       localStorage.removeItem('lastReloadTime')

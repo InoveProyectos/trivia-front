@@ -40,6 +40,8 @@ type TriviaContextData = {
   setCantQuestions: React.Dispatch<React.SetStateAction<number>>;
   firstData: boolean;
   setFirstData: React.Dispatch<React.SetStateAction<boolean>>;
+  nameRoom: string;
+  setNameRoom: React.Dispatch<React.SetStateAction<string>>;
 };
 
 export const TriviaContext = createContext<TriviaContextData>(
@@ -95,6 +97,7 @@ export const TriviaContextProvider = ({
   const [cantResOpciones, setCantResOpciones] = useState<number[]>([]);
   const [cantQuestions, setCantQuestions] = useState<number>(0);
   const [firstData,setFirstData] = useState<boolean>(false)
+  const [nameRoom,setNameRoom] = useState<string>("")
 
   const values: TriviaContextData = {
     trivia,
@@ -134,7 +137,9 @@ export const TriviaContextProvider = ({
     cantQuestions,
     setCantQuestions,
     firstData,
-    setFirstData
+    setFirstData,
+    nameRoom,
+    setNameRoom
   };
   return (
     <TriviaContext.Provider value={values}>{children}</TriviaContext.Provider>

@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Aviso from "../../components/Aviso/Aviso";
 import ButtonBegin from "../../components/ButtonBegin/ButtonBegin";
-import ButtonShare from "../../components/ButtonShare/ButtonShare";
+// import ButtonShare from "../../components/ButtonShare/ButtonShare";
 import Layout from "../../components/Layout/Layout";
 import RoomData from "../../components/RoomData/RoomData";
 import { useTriviaContext } from "../../Contexts/TriviaContext";

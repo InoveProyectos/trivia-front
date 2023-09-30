@@ -1,3 +1,7 @@
 {
-  "comp.wating.text": "Esperando al moderador..."
+  "comp.wating.text": "Esperando al moderador...",
+  "inf.trivia.iniciada": "La trivia esta iniciada, te redirigiremos para que puedas participar",
+  "err.trivia.finalizada": "La trivia que estas intentando ingresar se encuentra finalizada",
+  "err.trivia.notfound": "No se encontro la trivia",
+  "err.trivia.generic": "Hubo un problema al cargar la trivia"
 }

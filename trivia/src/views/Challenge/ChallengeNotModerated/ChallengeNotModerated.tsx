@@ -6,17 +6,17 @@ import Timmer from "../../../components/Timmer/Timmer";
 import { useTriviaContext } from "../../../Contexts/TriviaContext";
 import useTrivia from "../../../hooks/useTrivia";
 import "../Challenge.scss";
-import StudentAnswers from "../../../components/StudentAnswers/StudentAnswers";
 
-function ChallengeModerator() {
+function ChallengeNotModerated() {
   const {
     answers,
     estadoPregunta,
-    cantResUsers,
-    countUsersConected,
+    ansSelected,
+    correctAnswer,
+    setAnsSelected,
   } = useTriviaContext();
 
-  const {ValidarPregunta } = useTrivia();
+  const {ValidarPregunta, sendAnsSelected } = useTrivia();
 
   const handleFinishQuestion = async () => {
     ValidarPregunta();
@@ -35,21 +35,28 @@ function ChallengeModerator() {
     ),
   };
 
+  const handleSelected = (num?: number) => {
+    setAnsSelected(num);
+    sendAnsSelected(num);
+  };
+
   return (
-    <Layout className="contenedorPP-challenge contenedorPP-challengeModerator">
+    <Layout className="contenedorPP-challenge contenedorPP-challengeNotModerated">
       <div className="cont-challenge">
         <div className="child">
           <Timmer initialTime={20} />
         </div>
         <div className="chlid-2">
           <Statement ask={answers.description} remember={answers.name} />
-          <StudentAnswers
-            usersInRoom={countUsersConected}
-            cantRes={cantResUsers}
-          />
           <div className="cont-answers">
             {answers.options.map((answ) => {
-              return <Answer ans={answ} disable={true} />;
+              return <Answer
+                ansSelected={ansSelected}
+                ans={answ}
+                onSelected={handleSelected}
+                disable={false}
+                correctAnswer={correctAnswer}
+              />;
             })}
           </div>
         </div>
@@ -59,4 +66,4 @@ function ChallengeModerator() {
   );
 }
 
-export default ChallengeModerator;
+export default ChallengeNotModerated;

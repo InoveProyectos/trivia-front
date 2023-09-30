@@ -43,7 +43,7 @@ function ChallengeContestant() {
   };
 
   return (
-    <Layout className="contenedorPP-challenge">
+    <Layout className="contenedorPP-challenge contenedorPP-challengeContestant">
       <div className="cont-challenge">
         <div className="child">
           <Timmer initialTime={20} />
